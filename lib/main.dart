@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:kalakalikasan/widgets/login.dart';
+import 'package:kalakalikasan/screens/eco_actors.dart';
+import 'package:kalakalikasan/screens/login.dart';
 
 void main() {
-  runApp(const MaterialApp(
-    home: Scaffold(
-      body: Login(),
-    ),
+  runApp(MaterialApp(
+    home: EcoActors()
   ));
 }
