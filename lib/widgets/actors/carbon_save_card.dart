@@ -5,14 +5,7 @@ class CarbonSaveCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Stack(clipBehavior: Clip.none, children: [
-      Container(
-        margin: const EdgeInsets.only(left: 20, right: 20),
-        height: 200,
-        decoration:
-            const BoxDecoration(color: Color.fromARGB(255, 233, 233, 233)),
-      ),
-      Positioned(
+    return Positioned(
         top: -100,
         left: 20,
         right: 20,
@@ -54,7 +47,6 @@ class CarbonSaveCard extends StatelessWidget {
             ),
           ),
         ),
-      ),
-    ]);
+      );
   }
 }

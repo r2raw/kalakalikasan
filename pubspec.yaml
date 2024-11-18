@@ -62,6 +62,7 @@ flutter:
   assets:
     - assets/images/kalakalikasan_icon.png
     - assets/images/token-img.png
+    - assets/images/how-to-recycle.png
     # - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
