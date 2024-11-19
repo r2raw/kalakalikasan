@@ -5,6 +5,7 @@ import 'package:kalakalikasan/widgets/actors/recycle_tips_slides.dart';
 
 class HomeActor extends StatelessWidget {
   const HomeActor({super.key});
+  
 
   @override
   Widget build(BuildContext context) {

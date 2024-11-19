@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:kalakalikasan/screens/eco_actor/home_actor.dart';
-import 'package:kalakalikasan/widgets/actors/post_card.dart';
+import 'package:kalakalikasan/screens/notification.dart';
 import 'package:kalakalikasan/widgets/floating_nav.dart';
+import 'package:kalakalikasan/screens/eco_actor/community_updates.dart';
 import 'package:kalakalikasan/widgets/user_app_bar.dart';
 
 class EcoActors extends StatefulWidget {
@@ -24,6 +25,7 @@ class _EcoActorsState extends State<EcoActors> {
 
   @override
   Widget build(BuildContext context) {
+    double h = MediaQuery.of(context).size.height;
     Widget appBarTitle = InkWell(
       borderRadius: BorderRadius.circular(10),
       onTap: () {},
@@ -50,12 +52,15 @@ class _EcoActorsState extends State<EcoActors> {
         ],
       ),
     );
+
+    Widget content = HomeActor();
     // TODO: implement build
     if (_selectedTabIndex == 1) {
       appBarTitle = Text('Dashboard',
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold));
     }
     if (_selectedTabIndex == 2) {
+      content = CommunityUpdates();
       appBarTitle = Text('Community Updates & Guides',
           style: TextStyle(
             fontSize: 20,
@@ -68,7 +73,10 @@ class _EcoActorsState extends State<EcoActors> {
         title: appBarTitle,
         actions: [
           IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (ctx) => NotificationScreen()));
+              },
               icon: const Icon(
                 Icons.notifications,
                 size: 40,
@@ -88,6 +96,7 @@ class _EcoActorsState extends State<EcoActors> {
         ),
       ),
       body: Container(
+        height: h,
         padding: const EdgeInsets.fromLTRB(0, 48, 0, 0),
         width: double.infinity,
         decoration: const BoxDecoration(
@@ -105,63 +114,7 @@ class _EcoActorsState extends State<EcoActors> {
             Expanded(
               child: Stack(
                 children: [
-                  // HomeActor(),
-                  Container(
-                    decoration: const BoxDecoration(
-                      color: Color.fromARGB(255, 242, 244, 247),
-                    ),
-                    child: Column(
-                      children: [
-                        Card(
-                          margin: const EdgeInsets.symmetric(
-                              vertical: 10, horizontal: 20),
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 10, horizontal: 10),
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(20)),
-                            child: SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                          foregroundColor: Colors.black),
-                                      onPressed: () {},
-                                      child: Text('News & Articles')),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                        foregroundColor: Colors.black),
-                                    onPressed: () {},
-                                    child: Text('Announcements'),
-                                  ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                        foregroundColor: Colors.black),
-                                    onPressed: () {},
-                                    child: Text('Guides'),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        SingleChildScrollView(
-                          child: Column(
-                            children: [PostCard(), PostCard()],
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
+                  content,
                   Positioned(
                     bottom: 0,
                     left: 0,
