@@ -1,0 +1,62 @@
+import 'package:flutter/material.dart';
+
+const lorem =
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
+
+class NotificationItem extends StatelessWidget {
+  const NotificationItem({super.key, this.isRead, required this.notifTitle});
+  final String notifTitle;
+  final bool? isRead;
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+      decoration: BoxDecoration(
+          color: isRead == null || isRead!
+              ? Colors.white
+              : const Color.fromARGB(255, 225, 225, 225)),
+      child: InkWell(
+        onTap: () {},
+        child: Row(
+          children: [
+            Icon(Icons.mail_outline),
+            SizedBox(
+              width: 20,
+            ),
+            Expanded(
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.circle,
+                            size: 10,
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(notifTitle)
+                        ],
+                      ),
+                      Text('5h ago.')
+                    ],
+                  ),
+                  Text(
+                    lorem,
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kalakalikasan/screens/eco_actor/home_actor.dart';
 import 'package:kalakalikasan/screens/notification.dart';
+import 'package:kalakalikasan/screens/user_drawer.dart';
 import 'package:kalakalikasan/widgets/floating_nav.dart';
 import 'package:kalakalikasan/screens/eco_actor/community_updates.dart';
 import 'package:kalakalikasan/widgets/user_app_bar.dart';
@@ -28,7 +29,7 @@ class _EcoActorsState extends State<EcoActors> {
     double h = MediaQuery.of(context).size.height;
     Widget appBarTitle = InkWell(
       borderRadius: BorderRadius.circular(10),
-      onTap: () {},
+      onTap: () {Navigator.push(context, MaterialPageRoute(builder: (ctx)=> UserDrawer()));},
       child: const Row(
         children: [
           Icon(
@@ -55,10 +56,10 @@ class _EcoActorsState extends State<EcoActors> {
 
     Widget content = HomeActor();
     // TODO: implement build
-    if (_selectedTabIndex == 1) {
-      appBarTitle = Text('Dashboard',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold));
-    }
+    // if (_selectedTabIndex == 1) {
+    //   appBarTitle = Text('Dashboard',
+    //       style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold));
+    // }
     if (_selectedTabIndex == 2) {
       content = CommunityUpdates();
       appBarTitle = Text('Community Updates & Guides',
@@ -70,6 +71,7 @@ class _EcoActorsState extends State<EcoActors> {
 
     return Scaffold(
       appBar: AppBar(
+        foregroundColor: Colors.white,
         title: appBarTitle,
         actions: [
           IconButton(
@@ -79,15 +81,17 @@ class _EcoActorsState extends State<EcoActors> {
               },
               icon: const Icon(
                 Icons.notifications,
-                size: 40,
+                size: 30,
               ))
         ],
         flexibleSpace: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                Color.fromARGB(255, 141, 253, 120),
-                Color.fromARGB(255, 0, 131, 89)
+                // Color.fromARGB(255, 141, 253, 120),
+                // Color.fromARGB(255, 0, 131, 89)
+                Color.fromARGB(255, 72, 114, 50),
+                Color.fromARGB(255, 32, 77, 44 )
               ],
               begin: Alignment.centerRight,
               end: Alignment.centerLeft,
@@ -102,8 +106,10 @@ class _EcoActorsState extends State<EcoActors> {
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              Color.fromARGB(255, 141, 253, 120),
-              Color.fromARGB(255, 0, 131, 89)
+              // Color.fromARGB(255, 141, 253, 120),
+              // Color.fromARGB(255, 0, 131, 89)
+                Color.fromARGB(255, 72, 114, 50),
+                Color.fromARGB(255, 32, 77, 44 )
             ],
             begin: Alignment.centerRight,
             end: Alignment.centerLeft,

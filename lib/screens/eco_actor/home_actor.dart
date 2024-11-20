@@ -18,7 +18,7 @@ class HomeActor extends StatelessWidget {
         children: [
           SingleChildScrollView(
             child: Container(
-              padding: EdgeInsets.only(top: 100),
+              padding: const EdgeInsets.only(top: 100),
               decoration:
                   const BoxDecoration(color: Color.fromARGB(255, 233, 233, 233)),
               child: const Column(
@@ -38,7 +38,7 @@ class HomeActor extends StatelessWidget {
               ),
             ),
           ),
-          CarbonSaveCard(),
+          const CarbonSaveCard(),
         ],
       ),
     );

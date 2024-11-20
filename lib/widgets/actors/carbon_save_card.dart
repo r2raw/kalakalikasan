@@ -6,27 +6,39 @@ class CarbonSaveCard extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Positioned(
-        top: -100,
-        left: 20,
-        right: 20,
-        child: SizedBox(
-          height: 200,
-          child: Card(
+      top: -100,
+      left: 20,
+      right: 20,
+      child: SizedBox(
+        height: 200,
+        child: Card(
+          clipBehavior: Clip.hardEdge,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 7),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text('500g',
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 48)),
-                    Text('Saved C02',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ))
+                    Text(
+                      'Saved C02',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )
                   ],
                 ),
+                Container(
+                  width: 2,
+                  height: double.infinity,
+                  decoration: BoxDecoration(color: Color.fromARGB(255, 201, 200, 200)),
+                ),
                 Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Row(children: [
                       Image.asset(
@@ -40,13 +52,14 @@ class CarbonSaveCard extends StatelessWidget {
                             fontWeight: FontWeight.bold, fontSize: 48),
                       )
                     ]),
-                    Text('Economic Coins'),
+                    const Text('Ecological Coins'),
                   ],
                 )
               ],
             ),
           ),
         ),
-      );
+      ),
+    );
   }
 }

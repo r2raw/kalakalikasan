@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kalakalikasan/screens/eco_actors.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -51,7 +52,10 @@ class _loginState extends State<Login> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10)),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (ctx) => EcoActors()));
+                },
                 child: const Text(
                   'Login',
                   style: TextStyle(color: Colors.white),

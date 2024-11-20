@@ -6,29 +6,57 @@ class RecycleTipsSlides extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+      padding: const EdgeInsets.fromLTRB(20, 20, 30, 150),
       child: Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [Text('Recycling Tips and  Guide'), Text('See more..')],
+          Padding(
+            padding: const EdgeInsets.fromLTRB(10, 0, 10, 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Recycling Tips and  Guide',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Color.fromARGB(255, 34, 76, 43),
+                  ),
+                ),
+                Text(
+                  'See more >',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Color.fromARGB(255, 34, 76, 43),
+                  ),
+                ),
+              ],
+            ),
           ),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset(
-                  'assets/images/how-to-recycle.png',
-                  width: 300,
-                  fit: BoxFit.cover,
+                Card(
+                  clipBehavior: Clip.hardEdge,
+                  child: Image.asset(
+                    'assets/images/how-to-recycle.png',
+                    width: 300,
+                    fit: BoxFit.cover,
+                  ),
                 ),
-                SizedBox(width: 20,),
-                Image.asset(
-                  'assets/images/how-to-recycle.png',
-                  width: 300,
-                  fit: BoxFit.cover,
-                )
+                SizedBox(
+                  width: 20,
+                ),
+                Card(
+                  clipBehavior: Clip.hardEdge,
+                  child: Image.asset(
+                    'assets/images/how-to-recycle.png',
+                    width: 300,
+                    fit: BoxFit.cover,
+                  ),
+                ),
               ],
             ),
           )
