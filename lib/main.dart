@@ -4,6 +4,6 @@ import 'package:kalakalikasan/screens/login.dart';
 
 void main() {
   runApp(MaterialApp(
-    home: EcoActors()
+    home: Login()
   ));
 }
