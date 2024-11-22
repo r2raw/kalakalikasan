@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 const lorem =
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
 
@@ -48,10 +49,11 @@ class PostCard extends StatelessWidget {
                           Text('@asdasd'),
                         ],
                       ),
-                      Icon(
-                        Icons.more_vert,
-                        size: 40,
-                      ),
+                      Text('5h ago.')
+                      // Icon(
+                      //   Icons.more_vert,
+                      //   size: 40,
+                      // ),
                     ],
                   ),
                   const SizedBox(
@@ -77,8 +79,15 @@ class PostCard extends StatelessWidget {
                       ),
                       ElevatedButton.icon(
                         onPressed: () {},
-                        label: Text('123'),
-                        icon: Icon(Icons.message),
+                        label: Text(
+                          '123',
+                          style: TextStyle(
+                              color: Color.fromARGB(255, 9, 127, 218)),
+                        ),
+                        icon: Icon(
+                          Icons.message,
+                          color: Color.fromARGB(255, 9, 127, 218),
+                        ),
                       )
                     ],
                   )

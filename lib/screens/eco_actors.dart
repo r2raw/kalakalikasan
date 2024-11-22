@@ -54,7 +54,7 @@ class _EcoActorsState extends State<EcoActors> {
       ),
     );
 
-    Widget content = HomeActor();
+    Widget content = HomeActor(onTabSelect: _tabSelect,);
     // TODO: implement build
     // if (_selectedTabIndex == 1) {
     //   appBarTitle = Text('Dashboard',

@@ -4,8 +4,8 @@ import 'package:kalakalikasan/widgets/actors/dashboard_nav.dart';
 import 'package:kalakalikasan/widgets/actors/recycle_tips_slides.dart';
 
 class HomeActor extends StatelessWidget {
-  const HomeActor({super.key});
-  
+  const HomeActor({super.key, required this.onTabSelect});
+  final void Function(int index) onTabSelect;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class HomeActor extends StatelessWidget {
               padding: const EdgeInsets.only(top: 100),
               decoration:
                   const BoxDecoration(color: Color.fromARGB(255, 233, 233, 233)),
-              child: const Column(
+              child:  Column(
                 children: [
                   SingleChildScrollView(
                     child: Padding(
@@ -29,7 +29,7 @@ class HomeActor extends StatelessWidget {
                       child: Column(
                         children: [
                           DashboardNav(),
-                          RecycleTipsSlides(),
+                          RecycleTipsSlides(onTabSelect: onTabSelect,),
                         ],
                       ),
                     ),

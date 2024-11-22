@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kalakalikasan/data/dummy_data.dart';
+import 'package:kalakalikasan/screens/user_drawer.dart';
 
 class FloatingNav extends StatelessWidget {
   const FloatingNav({super.key, required this.onTabSelect});
@@ -25,6 +26,10 @@ class FloatingNav extends StatelessWidget {
                   iconSize: 40,
                 ),
                 onPressed: () {
+                  if(navItem.index ==1){
+                    Navigator.push(context, MaterialPageRoute(builder: (ctx)=> UserDrawer()));
+                    return;
+                  }
                   onTabSelect(navItem.index);
                 },
                 icon: Icon(navItem.navIcon),

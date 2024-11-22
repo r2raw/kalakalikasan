@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class RecycleTipsSlides extends StatelessWidget {
-  const RecycleTipsSlides({super.key});
+  const RecycleTipsSlides({super.key, required this.onTabSelect});
+  
+  final void Function(int index) onTabSelect;
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -22,14 +24,25 @@ class RecycleTipsSlides extends StatelessWidget {
                     color: Color.fromARGB(255, 34, 76, 43),
                   ),
                 ),
-                Text(
-                  'See more >',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: Color.fromARGB(255, 34, 76, 43),
-                  ),
-                ),
+                TextButton(
+                    style: TextButton.styleFrom(),
+                    onPressed: () {onTabSelect(2);},
+                    child: Text(
+                      'See more >>',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: Color.fromARGB(255, 34, 76, 43),
+                      ),
+                    ))
+                // Text(
+                //   'See more >',
+                // style: TextStyle(
+                //   fontSize: 16,
+                //   fontWeight: FontWeight.w600,
+                //   color: Color.fromARGB(255, 34, 76, 43),
+                // ),
+                // ),
               ],
             ),
           ),

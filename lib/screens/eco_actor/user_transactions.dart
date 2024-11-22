@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:kalakalikasan/data/dummy_data.dart';
+import 'package:kalakalikasan/model/transactions_data.dart';
+import 'package:kalakalikasan/widgets/actors/transaction_list.dart';
 import 'package:kalakalikasan/widgets/under_construction.dart';
+
+final now = DateTime.parse('2007-12-30');
 
 class UserTransactionsScreen extends StatelessWidget {
   const UserTransactionsScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -33,7 +37,7 @@ class UserTransactionsScreen extends StatelessWidget {
       body: Container(
         width: w,
         height: h,
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+        // padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [
@@ -46,8 +50,29 @@ class UserTransactionsScreen extends StatelessWidget {
             end: Alignment.centerLeft,
           ),
         ),
-        child: Column(
-          children: [UnderConstruction()],
+        child: Container(
+          height: 100,
+          width: double.infinity,
+          decoration: BoxDecoration(color: Colors.white),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Text('Filter'),
+                  ElevatedButton(onPressed: () {}, child: Text('Date')),
+                  ElevatedButton(onPressed: () {}, child: Text('Type'))
+                ],
+              ),
+              Column(
+                children: [
+                  Text('Today'),
+                  Card(
+                    child: TransactionList()
+                  )
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );

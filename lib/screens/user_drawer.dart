@@ -114,11 +114,26 @@ class UserDrawer extends StatelessWidget {
                             SizedBox(
                               height: 20,
                             ),
-                            MenuDrawerItem(icon: Icons.store, title: 'My shop',),
-                            MenuDrawerItem(icon: Icons.password, title: 'Change Password',),
-                            MenuDrawerItem(icon: Icons.newspaper, title: 'News, Announcements, & Guides',),
-                            MenuDrawerItem(icon: Icons.paste_sharp, title: 'Terms & Condition',),
-                            MenuDrawerItem(icon: Icons.info, title: 'About us',),
+                            MenuDrawerItem(
+                              icon: Icons.store,
+                              title: 'My shop',
+                            ),
+                            MenuDrawerItem(
+                              icon: Icons.password,
+                              title: 'Change Password',
+                            ),
+                            MenuDrawerItem(
+                              icon: Icons.newspaper,
+                              title: 'News, Announcements, & Guides',
+                            ),
+                            MenuDrawerItem(
+                              icon: Icons.paste_sharp,
+                              title: 'Terms & Condition',
+                            ),
+                            MenuDrawerItem(
+                              icon: Icons.info,
+                              title: 'About us',
+                            ),
                           ],
                         ),
                         ElevatedButton(
@@ -128,7 +143,11 @@ class UserDrawer extends StatelessWidget {
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10)),
                           ),
-                          onPressed: () {Navigator.pushReplacement(context, MaterialPageRoute(builder: (ctx)=> Login()));},
+                          onPressed: () {
+                            Navigator.pop(context);
+                            Navigator.pushReplacement(context,
+                                MaterialPageRoute(builder: (ctx) => Login()));
+                          },
                           child: const Text(
                             'Logout',
                             style: TextStyle(color: Colors.white),
