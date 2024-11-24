@@ -12,6 +12,7 @@ class UserTransactionsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: implement build
     double h = MediaQuery.of(context).size.height;
+    List<TransactionsData> trasaction_history = [];
     double w = MediaQuery.of(context).size.width;
     // TODO: implement build
     return Scaffold(
@@ -37,7 +38,7 @@ class UserTransactionsScreen extends StatelessWidget {
       body: Container(
         width: w,
         height: h,
-        // padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+        padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [
@@ -51,9 +52,8 @@ class UserTransactionsScreen extends StatelessWidget {
           ),
         ),
         child: Container(
-          height: 100,
-          width: double.infinity,
-          decoration: BoxDecoration(color: Colors.white),
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+          decoration: BoxDecoration(color: Color.fromARGB(255, 233, 233, 233)),
           child: Column(
             children: [
               Row(
@@ -63,14 +63,9 @@ class UserTransactionsScreen extends StatelessWidget {
                   ElevatedButton(onPressed: () {}, child: Text('Type'))
                 ],
               ),
-              Column(
-                children: [
-                  Text('Today'),
-                  Card(
-                    child: TransactionList()
-                  )
-                ],
-              )
+              TransactionList(
+                transactions: transactionHistory,
+              ),
             ],
           ),
         ),

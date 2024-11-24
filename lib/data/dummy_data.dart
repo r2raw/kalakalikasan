@@ -36,4 +36,12 @@ final transactionHistory = [
       type: TransactionType.deposit, date: DateTime.parse('2024-11-18'), value: 200),
   TransactionsData(
       type: TransactionType.buy, date: DateTime.parse('2024-11-20'), value: 200),
+  TransactionsData(
+      type: TransactionType.buy, date: DateTime.parse('2024-07-20'), value: 200),
+  TransactionsData(
+      type: TransactionType.buy, date: DateTime.parse('2024-11-20'), value: 200),
+  TransactionsData(
+      type: TransactionType.buy, date: DateTime.parse('2024-09-20'), value: 200),
+  TransactionsData(
+      type: TransactionType.buy, date: DateTime.parse('2024-10-20'), value: 200),
 ];
