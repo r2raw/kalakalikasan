@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kalakalikasan/data/dummy_data.dart';
+import 'package:kalakalikasan/provider/screen_provider.dart';
 import 'package:kalakalikasan/screens/user_drawer.dart';
 
-class FloatingNav extends StatelessWidget {
-  const FloatingNav({super.key, required this.onTabSelect});
-  final void Function(int index) onTabSelect;
+class FloatingNav extends ConsumerWidget {
+  const FloatingNav({super.key});
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref){
     // TODO: implement build
     return Card(
       margin: EdgeInsets.only(left: 20, right: 20, bottom: 40),
@@ -30,7 +31,7 @@ class FloatingNav extends StatelessWidget {
                     Navigator.push(context, MaterialPageRoute(builder: (ctx)=> UserDrawer()));
                     return;
                   }
-                  onTabSelect(navItem.index);
+                  ref.read(screenProvider.notifier).swapScreen(navItem.index);
                 },
                 icon: Icon(navItem.navIcon),
               )

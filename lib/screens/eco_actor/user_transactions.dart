@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kalakalikasan/data/dummy_data.dart';
-import 'package:kalakalikasan/model/transactions_data.dart';
 import 'package:kalakalikasan/widgets/actors/transaction_list.dart';
-import 'package:kalakalikasan/widgets/under_construction.dart';
 
 final now = DateTime.parse('2007-12-30');
 
@@ -12,7 +9,6 @@ class UserTransactionsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: implement build
     double h = MediaQuery.of(context).size.height;
-    List<TransactionsData> trasaction_history = [];
     double w = MediaQuery.of(context).size.width;
     // TODO: implement build
     return Scaffold(
@@ -63,9 +59,7 @@ class UserTransactionsScreen extends StatelessWidget {
                   ElevatedButton(onPressed: () {}, child: Text('Type'))
                 ],
               ),
-              TransactionList(
-                transactions: transactionHistory,
-              ),
+              TransactionList(),
             ],
           ),
         ),

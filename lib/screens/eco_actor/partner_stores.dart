@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kalakalikasan/widgets/actors/store_card.dart';
+import 'package:kalakalikasan/widgets/officers/floating_reg_store_btn.dart';
 
 class PartnerStoresScreen extends StatelessWidget {
   const PartnerStoresScreen({super.key});
@@ -50,18 +51,24 @@ class PartnerStoresScreen extends StatelessWidget {
               height: 20,
             ),
             Expanded(
-              child: GridView(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2),
+              child: Stack(
                 children: [
-                  StoreCard(),
-                  StoreCard(),
-                  StoreCard(),
-                  StoreCard(),
-                  StoreCard(),
-                  StoreCard(),
-                  StoreCard(),
-                  StoreCard(),
+                  GridView(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2),
+                    children: const [
+                      StoreCard(),
+                      StoreCard(),
+                      StoreCard(),
+                      StoreCard(),
+                      StoreCard(),
+                      StoreCard(),
+                      StoreCard(),
+                      StoreCard(),
+                    ],
+                  ),
+                  FloatingRegStoreBtn()
                 ],
               ),
             )

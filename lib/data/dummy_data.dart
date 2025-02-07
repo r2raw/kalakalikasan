@@ -1,47 +1,227 @@
 import 'package:flutter/material.dart';
 import 'package:kalakalikasan/model/navigations.dart';
+import 'package:kalakalikasan/model/product.dart';
+import 'package:kalakalikasan/model/recyclable_materials.dart';
+import 'package:kalakalikasan/model/schedule.dart';
 import 'package:kalakalikasan/model/transactions_data.dart';
 
 const actorNav = [
   ActorNav(navIcon: Icons.home_outlined, index: 0),
   ActorNav(navIcon: Icons.dashboard_outlined, index: 1),
+  ActorNav(navIcon: Icons.storefront, index: 2),
+  ActorNav(navIcon: Icons.newspaper_outlined, index: 3),
+];
+
+
+
+const officerNav = [
+  ActorNav(navIcon: Icons.home_outlined, index: 0),
+  ActorNav(navIcon: Icons.qr_code_scanner_outlined, index: 1),
   ActorNav(navIcon: Icons.newspaper_outlined, index: 2),
 ];
 
 final now = DateTime.now();
 
-
-
-
-
 final transactionHistory = [
   TransactionsData(
-      type: TransactionType.withdraw, date: DateTime.parse('2024-11-19'), value: 200),
+      type: TransactionType.withdraw,
+      date: DateTime.parse('2024-11-19'),
+      value: 200),
   TransactionsData(type: TransactionType.buy, date: now, value: 40),
   TransactionsData(type: TransactionType.withdraw, date: now, value: 430),
   TransactionsData(type: TransactionType.sell, date: now, value: 100),
-  TransactionsData(type: TransactionType.deposit, date: now, value: 41
+  TransactionsData(type: TransactionType.deposit, date: now, value: 41),
+  TransactionsData(
+      type: TransactionType.sell,
+      date: DateTime.parse('2024-11-21'),
+      value: 200),
+  TransactionsData(
+      type: TransactionType.withdraw,
+      date: DateTime.parse('2024-11-21'),
+      value: 200),
+  TransactionsData(
+      type: TransactionType.withdraw,
+      date: DateTime.parse('2024-11-21'),
+      value: 200),
+  TransactionsData(
+      type: TransactionType.buy,
+      date: DateTime.parse('2024-11-21'),
+      value: 200),
+  TransactionsData(
+      type: TransactionType.deposit,
+      date: DateTime.parse('2024-11-19'),
+      value: 200),
+  TransactionsData(
+      type: TransactionType.deposit,
+      date: DateTime.parse('2024-11-18'),
+      value: 200),
+  TransactionsData(
+      type: TransactionType.buy,
+      date: DateTime.parse('2024-11-20'),
+      value: 200),
+  TransactionsData(
+      type: TransactionType.buy,
+      date: DateTime.parse('2024-07-20'),
+      value: 200),
+  TransactionsData(
+      type: TransactionType.buy,
+      date: DateTime.parse('2024-11-20'),
+      value: 200),
+  TransactionsData(
+      type: TransactionType.buy,
+      date: DateTime.parse('2024-09-20'),
+      value: 200),
+  TransactionsData(
+      type: TransactionType.buy,
+      date: DateTime.parse('2024-10-20'),
+      value: 200),
+];
+
+final collectionScheduleData = [
+  Schedule(
+    barangayName: 'Commonwealth',
+    collectionDate: DateTime.parse('2024-11-29'),
+    startTime: DateTime.parse('8:00'),
+    endTime: DateTime.parse('9:00'),
   ),
-  TransactionsData(
-      type: TransactionType.sell, date: DateTime.parse('2024-11-21'), value: 200),
-  TransactionsData(
-      type: TransactionType.withdraw, date: DateTime.parse('2024-11-21'), value: 200),
-  TransactionsData(
-      type: TransactionType.withdraw, date: DateTime.parse('2024-11-21'), value: 200),
-  TransactionsData(
-      type: TransactionType.buy, date: DateTime.parse('2024-11-21'), value: 200),
-  TransactionsData(
-      type: TransactionType.deposit, date: DateTime.parse('2024-11-19'), value: 200),
-  TransactionsData(
-      type: TransactionType.deposit, date: DateTime.parse('2024-11-18'), value: 200),
-  TransactionsData(
-      type: TransactionType.buy, date: DateTime.parse('2024-11-20'), value: 200),
-  TransactionsData(
-      type: TransactionType.buy, date: DateTime.parse('2024-07-20'), value: 200),
-  TransactionsData(
-      type: TransactionType.buy, date: DateTime.parse('2024-11-20'), value: 200),
-  TransactionsData(
-      type: TransactionType.buy, date: DateTime.parse('2024-09-20'), value: 200),
-  TransactionsData(
-      type: TransactionType.buy, date: DateTime.parse('2024-10-20'), value: 200),
+  Schedule(
+    barangayName: 'Batasan',
+    collectionDate: DateTime.parse('2024-11-29'),
+    startTime: DateTime.parse('9:00'),
+    endTime: DateTime.parse('10:00'),
+  ),
+  Schedule(
+    barangayName: 'Holy Spirit',
+    collectionDate: DateTime.parse('2024-11-29'),
+    startTime: DateTime.parse('8:00'),
+    endTime: DateTime.parse('9:00'),
+  ),
+  Schedule(
+    barangayName: 'Bag-bag',
+    collectionDate: DateTime.parse('2024-11-29'),
+    startTime: DateTime.parse('8:00'),
+    endTime: DateTime.parse('9:00'),
+  ),
+];
+
+const materialsData = [
+  RecyclableMaterials(
+    waste_type: 'Plastic',
+    material_name: 'Assorted PP',
+    dirty: 1,
+    clean: 10,
+    minimumKg: 1,
+  ),
+  RecyclableMaterials(
+    waste_type: 'Plastic',
+    material_name: 'HDPE Blow Clear',
+    dirty: 1,
+    clean: 10,
+    minimumKg: 1,
+  ),
+  RecyclableMaterials(
+    waste_type: 'Plastic',
+    material_name: 'HDPE Blow Colored',
+    dirty: 1,
+    clean: 10,
+    minimumKg: 1,
+  ),
+  RecyclableMaterials(
+    waste_type: 'Plastic',
+    material_name: 'PET Clear',
+    dirty: 1,
+    clean: 10,
+    minimumKg: 1,
+  ),
+  RecyclableMaterials(
+    waste_type: 'Plastic',
+    material_name: 'PET Green',
+    dirty: 1,
+    clean: 10,
+    minimumKg: 1,
+  ),
+  RecyclableMaterials(
+    waste_type: 'Plastic',
+    material_name: 'PET Bluish',
+    dirty: 1,
+    clean: 10,
+    minimumKg: 1,
+  ),
+  RecyclableMaterials(
+    waste_type: 'Plastic',
+    material_name: 'Single Use Plastic',
+    dirty: 1,
+    clean: 10,
+    minimumKg: 1,
+  ),
+  RecyclableMaterials(
+    waste_type: 'Plastic',
+    material_name: 'Acryliconitrile Butadiene Styrene (ABS)',
+    dirty: 1,
+    clean: 10,
+    minimumKg: 1,
+  ),
+  RecyclableMaterials(
+    waste_type: 'Plastic',
+    material_name: 'PVC pipe black',
+    dirty: 1,
+    clean: 10,
+    minimumKg: 1,
+  ),
+  RecyclableMaterials(
+    waste_type: 'Plastic',
+    material_name: 'PVC pipe blue',
+    dirty: 1,
+    clean: 10,
+    minimumKg: 1,
+  ),
+  RecyclableMaterials(
+    waste_type: 'Plastic',
+    material_name: 'PVC pipe orange',
+    dirty: 1,
+    clean: 10,
+    minimumKg: 1,
+  ),
+  RecyclableMaterials(
+    waste_type: 'Plastic',
+    material_name: 'PVC-tarpaulin',
+    dirty: 1,
+    clean: 10,
+    minimumKg: 1,
+  ),
+];
+
+
+const dummyProducts =  [
+  Product(title: 'Sardinas', price: 25, quantity: 20),
+  Product(title: 'Safeguard', price: 24, quantity: 23),
+  Product(title: 'Tide', price: 13, quantity: 40),
+  Product(title: 'Eskinol', price:53, quantity: 30),
+  Product(title: 'Colgate', price: 12, quantity: 41),
+  Product(title: 'Piattos', price: 19, quantity: 23),
+  Product(title: 'Combi', price: 8, quantity: 32),
+  Product(title: 'Hani', price: 3, quantity: 42),
+  Product(title: 'Fudgee Barr', price: 8, quantity: 24),
+  Product(title: 'Inipit', price: 8, quantity: 24),
+  Product(title: 'Palmolive', price: 9, quantity: 20),
+  Product(title: 'Rexona', price:10, quantity: 20),
+  Product(title: 'X-Sakto', price: 10, quantity: 20),
+  Product(title: 'Cloud-9', price: 12, quantity: 20),
+  Product(title: 'Polvoron', price: 2, quantity: 20),
+  Product(title: 'SunSilk', price: 9, quantity: 20),
+];
+
+
+
+const dummyProductRequest = [
+  ProductTradeRequest(requestedProducts: [
+  Product(title: 'Sardinas', price: 25, quantity: 2),
+  Product(title: 'Safeguard', price: 24, quantity: 3),
+  Product(title: 'Tide', price: 13, quantity: 4),], name: 'Juan Dela Cruz'),
+  ProductTradeRequest(requestedProducts: [
+  Product(title: 'Hani', price: 3, quantity: 2),
+  Product(title: 'Fudgee Barr', price: 8, quantity: 2),
+  Product(title: 'Inipit', price: 8, quantity: 24),
+  Product(title: 'Palmolive', price: 9, quantity: 2),
+  Product(title: 'Rexona', price:10, quantity: 20),], name: 'Deo Balbuena'),
 ];

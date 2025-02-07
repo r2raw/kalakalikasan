@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:kalakalikasan/screens/eco_actor/collection_schedules.dart';
 import 'package:kalakalikasan/screens/eco_actor/conversion_rates.dart';
 import 'package:kalakalikasan/screens/eco_actor/more.dart';
+import 'package:kalakalikasan/screens/eco_actor/shop_registration.dart';
+import 'package:kalakalikasan/screens/my_shop_screen.dart';
 import 'package:kalakalikasan/screens/eco_actor/nearby_stations.dart';
 import 'package:kalakalikasan/screens/eco_actor/partner_stores.dart';
 import 'package:kalakalikasan/screens/eco_actor/point_exchange.dart';
@@ -13,12 +15,12 @@ class DashboardNav extends StatelessWidget {
   const DashboardNav({super.key});
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return GridView(
       padding: EdgeInsets.all(20),
       shrinkWrap: true,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 4,
+        mainAxisSpacing: 10
       ),
       children: const [
         DashboardNavItem(
@@ -36,16 +38,11 @@ class DashboardNav extends StatelessWidget {
           title: 'Nearby Stations',
           screen: NearbyStationScreen(),
         ),
-        DashboardNavItem(
-          icon: Icons.compare_arrows_outlined,
-          title: 'Conversion Rates',
-          screen: ConversionRatesScreen(),
-        ),
-        DashboardNavItem(
-          icon: Icons.calendar_month,
-          title: 'Collection Schedules',
-          screen: CollectionSchedulesScreen(),
-        ),
+        // DashboardNavItem(
+        //   icon: Icons.compare_arrows_outlined,
+        //   title: 'Conversion Rates',
+        //   screen: ConversionRatesScreen(),
+        // ),
         DashboardNavItem(
           icon: Icons.featured_play_list_sharp,
           title: 'Transactions',
@@ -57,9 +54,9 @@ class DashboardNav extends StatelessWidget {
           screen: ReferralScreen(),
         ),
         DashboardNavItem(
-          icon: Icons.more_horiz,
-          title: 'More',
-          screen: MoreScreen(),
+          icon: Icons.storefront_outlined,
+          title: 'Shop Registration',
+          screen: ShopRegistrationScreen(),
         ),
       ],
     );

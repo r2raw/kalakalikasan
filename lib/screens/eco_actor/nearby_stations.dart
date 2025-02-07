@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:kalakalikasan/widgets/actors/station_map.dart';
 import 'package:kalakalikasan/widgets/under_construction.dart';
 
 class NearbyStationScreen extends StatelessWidget {
@@ -35,20 +37,13 @@ class NearbyStationScreen extends StatelessWidget {
         height: h,
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
         decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              // Color.fromARGB(255, 141, 253, 120),
-              // Color.fromARGB(255, 0, 131, 89)
-              Color.fromARGB(255, 72, 114, 50),
-              Color.fromARGB(255, 32, 77, 44)
-            ],
-            begin: Alignment.centerRight,
-            end: Alignment.centerLeft,
-          ),
+          color: Color.fromARGB(255, 233, 233, 233)
         ),
         child: Column(
-          children: [UnderConstruction()],
-        ),
+          children: [
+            StationMap(),
+          ],
+        )
       ),
     );
   }

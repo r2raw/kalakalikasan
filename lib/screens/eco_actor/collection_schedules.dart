@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kalakalikasan/widgets/actors/schedule_list.dart';
 import 'package:kalakalikasan/widgets/actors/weekly_schedule.dart';
 import 'package:kalakalikasan/widgets/under_construction.dart';
 
@@ -10,6 +11,7 @@ class CollectionSchedulesScreen extends StatelessWidget {
     // TODO: implement build
     double h = MediaQuery.of(context).size.height;
     double w = MediaQuery.of(context).size.width;
+
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
@@ -35,20 +37,25 @@ class CollectionSchedulesScreen extends StatelessWidget {
         width: w,
         height: h,
         decoration: const BoxDecoration(
-          // gradient: LinearGradient(
-          //   colors: [
-          //     // Color.fromARGB(255, 141, 253, 120),
-          //     // Color.fromARGB(255, 0, 131, 89)
-          //     Color.fromARGB(255, 72, 114, 50),
-          //     Color.fromARGB(255, 32, 77, 44)
-          //   ],
-          //   begin: Alignment.centerRight,
-          //   end: Alignment.centerLeft,
-          // ),
           color: Color.fromARGB(255, 233, 233, 233),
         ),
-        child: Column(
-          children: [WeeklySchedule()],
+        child: Container(
+          padding: EdgeInsets.symmetric(
+            vertical: 20,
+          ),
+          child: Column(
+            children: [
+              WeeklySchedule(),
+              SizedBox(
+                height: 20,
+              ),
+              Expanded(
+                  child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: ScheduleList(),
+              )),
+            ],
+          ),
         ),
       ),
     );

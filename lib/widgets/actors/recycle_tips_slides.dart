@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kalakalikasan/provider/screen_provider.dart';
 
-class RecycleTipsSlides extends StatelessWidget {
-  const RecycleTipsSlides({super.key, required this.onTabSelect});
+class RecycleTipsSlides extends ConsumerWidget {
+  const RecycleTipsSlides({super.key});
   
-  final void Function(int index) onTabSelect;
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     // TODO: implement build
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 20, 30, 150),
@@ -26,11 +27,11 @@ class RecycleTipsSlides extends StatelessWidget {
                 ),
                 TextButton(
                     style: TextButton.styleFrom(),
-                    onPressed: () {onTabSelect(2);},
+                    onPressed: () {ref.read(screenProvider.notifier).swapScreen(3);},
                     child: Text(
                       'See more >>',
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 12,
                         fontWeight: FontWeight.w600,
                         color: Color.fromARGB(255, 34, 76, 43),
                       ),

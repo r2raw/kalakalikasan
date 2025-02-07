@@ -52,7 +52,7 @@ class CarbonSaveCard extends StatelessWidget {
                             fontWeight: FontWeight.bold, fontSize: 48),
                       )
                     ]),
-                    const Text('Ecological Coins'),
+                    const Text('Eco Coins'),
                   ],
                 )
               ],

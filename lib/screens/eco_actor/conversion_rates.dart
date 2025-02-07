@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:kalakalikasan/widgets/actors/conversion_rates_list.dart';
 import 'package:kalakalikasan/widgets/under_construction.dart';
+
 class ConversionRatesScreen extends StatelessWidget {
   const ConversionRatesScreen({super.key});
 
@@ -32,22 +34,42 @@ class ConversionRatesScreen extends StatelessWidget {
       body: Container(
         width: w,
         height: h,
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              // Color.fromARGB(255, 141, 253, 120),
-              // Color.fromARGB(255, 0, 131, 89)
-              Color.fromARGB(255, 72, 114, 50),
-              Color.fromARGB(255, 32, 77, 44)
-            ],
-            begin: Alignment.centerRight,
-            end: Alignment.centerLeft,
-          ),
-        ),
+        // padding: EdgeInsets.symmetric(horizontal: 0, vertical: 30),
+        decoration:
+            const BoxDecoration(color: Color.fromARGB(255, 233, 233, 233)),
         child: Column(
           children: [
-            UnderConstruction(),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              child: Column(
+                children: [
+                  TextField(
+                    decoration: InputDecoration(label: Text('Search')),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    children: [
+                      Text('Filters'),
+                      ElevatedButton(
+                        onPressed: () {},
+                        child: Text('Plastics'),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {},
+                        child: Text('Metals'),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {},
+                        child: Text('Papers'),
+                      )
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            Expanded(child: ConversionRatesList()),
           ],
         ),
       ),

@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:kalakalikasan/screens/eco_actor/point_exchange.dart';
 
 class DashboardNavItem extends StatelessWidget {
-  const DashboardNavItem({super.key, required this.icon, required this.title, required this.screen});
+  const DashboardNavItem(
+      {super.key,
+      required this.icon,
+      required this.title,
+      required this.screen});
   final IconData icon;
   final String title;
   final Widget screen;
@@ -12,10 +16,10 @@ class DashboardNavItem extends StatelessWidget {
     // TODO: implement build
     return InkWell(
       onTap: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (ctx) => screen));
+        Navigator.push(context, MaterialPageRoute(builder: (ctx) => screen));
       },
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
             padding: EdgeInsets.all(10),
@@ -29,13 +33,18 @@ class DashboardNavItem extends StatelessWidget {
               size: 30,
             ),
           ),
-          Text(
-            title,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
-              color: Color.fromARGB(255, 34, 76, 43),
+          SizedBox(height: 4,),
+          Expanded(
+            child: Text(
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              title,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+                color: Color.fromARGB(255, 34, 76, 43),
+              ),
             ),
           ),
         ],

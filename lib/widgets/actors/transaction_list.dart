@@ -1,30 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kalakalikasan/data/dummy_data.dart';
+import 'package:kalakalikasan/provider/transaction_provider.dart';
 import 'package:kalakalikasan/widgets/actors/transaction_item.dart';
 import 'package:kalakalikasan/model/transactions_data.dart';
 
 final now = DateTime.now();
 
-class TransactionList extends StatefulWidget {
-  const TransactionList({super.key, required this.transactions});
+class TransactionList extends ConsumerStatefulWidget {
+  const TransactionList({super.key});
 
-  final List<TransactionsData> transactions;
+  // final List<TransactionsData> transactions;
 
   @override
-  State<StatefulWidget> createState() {
+  ConsumerState<TransactionList> createState() {
     // TODO: implement createState
     return _TransactionListState();
   }
 }
 
-class _TransactionListState extends State<TransactionList> {
+class _TransactionListState extends ConsumerState<TransactionList> {
   List<TransactionsData> get sortedTransactions {
-    List<TransactionsData> arr = widget.transactions;
+    // List<TransactionsData> arr = widget.transactions;
+      final arr = ref.watch(transactionProvider);
+      if (arr.isEmpty) return [];
 
-    if (arr.isEmpty) return [];
-
-    arr.sort((a, b) => b.date.compareTo(a.date));
-    return arr;
+      arr.sort((a, b) => b.date.compareTo(a.date));
+      return arr;
   }
 
   @override
@@ -46,9 +48,11 @@ class _TransactionListState extends State<TransactionList> {
     );
 
     if (transactionsToday.isNotEmpty) {
-      content = Column(crossAxisAlignment: CrossAxisAlignment.start ,children: [
+      content = Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         const Text('Today'),
-        const SizedBox(height: 10,),
+        const SizedBox(
+          height: 10,
+        ),
         Card(
           child: Column(
             children: [
@@ -57,9 +61,18 @@ class _TransactionListState extends State<TransactionList> {
             ],
           ),
         ),
-        const SizedBox(height: 20,),
-        const Text('Previous transactions', style: TextStyle(fontSize: 16,),),
-        const SizedBox(height: 10,),
+        const SizedBox(
+          height: 20,
+        ),
+        const Text(
+          'Previous transactions',
+          style: TextStyle(
+            fontSize: 16,
+          ),
+        ),
+        const SizedBox(
+          height: 10,
+        ),
         Card(
           child: Column(
             children: [

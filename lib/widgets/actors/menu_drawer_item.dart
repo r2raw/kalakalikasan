@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 
 class MenuDrawerItem extends StatelessWidget {
-  const MenuDrawerItem({super.key, required this.icon, required this.title});
+  const MenuDrawerItem({super.key, required this.icon, required this.title, required this.onSelect});
   final IconData icon;
   final String title;
+
+  final void Function() onSelect;
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return InkWell(
-      onTap: (){},
+      onTap: onSelect,
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 10),
         child: Row(

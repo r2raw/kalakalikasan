@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kalakalikasan/provider/current_user_provider.dart';
+import 'package:kalakalikasan/provider/screen_provider.dart';
 import 'package:kalakalikasan/screens/login.dart';
 import 'package:kalakalikasan/widgets/actors/menu_drawer_item.dart';
 
-class UserDrawer extends StatelessWidget {
+class UserDrawer extends ConsumerWidget {
   const UserDrawer({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final firstName = ref.watch(currentUserProvider)[CurrentUser.firstName].toString().toUpperCase();
+    final lastName = ref.watch(currentUserProvider)[CurrentUser.lastName].toString().toUpperCase();
+    final email = ref.watch(currentUserProvider)[CurrentUser.email].toString();
+    final fullName = '$firstName $lastName';
     double h = MediaQuery.of(context).size.height;
     double w = MediaQuery.of(context).size.width;
     // TODO: implement build
@@ -65,13 +72,13 @@ class UserDrawer extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Juan Dela Cruz',
+                            fullName,
                             style: TextStyle(
                               fontSize: 24,
                               color: Colors.white,
                             ),
                           ),
-                          Text('juandelacruz@gmail.com',
+                          Text(email,
                               style: TextStyle(
                                 fontSize: 16,
                                 color: Colors.white,
@@ -100,7 +107,7 @@ class UserDrawer extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Column(
+                        Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
@@ -117,22 +124,38 @@ class UserDrawer extends StatelessWidget {
                             MenuDrawerItem(
                               icon: Icons.store,
                               title: 'My shop',
+                              onSelect: () {
+                                print('My Shop');
+                              },
                             ),
                             MenuDrawerItem(
                               icon: Icons.password,
                               title: 'Change Password',
+                              onSelect: () {
+                                print('Change Password');
+                              },
                             ),
                             MenuDrawerItem(
                               icon: Icons.newspaper,
                               title: 'News, Announcements, & Guides',
+                              onSelect: () {
+                                Navigator.of(context).pop();
+                                ref.read(screenProvider.notifier).swapScreen(3);
+                              },
                             ),
                             MenuDrawerItem(
                               icon: Icons.paste_sharp,
                               title: 'Terms & Condition',
+                              onSelect: () {
+                                print('Terms & Condition');
+                              },
                             ),
                             MenuDrawerItem(
                               icon: Icons.info,
                               title: 'About us',
+                              onSelect: () {
+                                print('About us');
+                              },
                             ),
                           ],
                         ),
