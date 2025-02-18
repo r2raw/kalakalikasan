@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kalakalikasan/screens/eco_actors.dart';
 import 'package:kalakalikasan/screens/login.dart';
 
 void main() {
-  runApp(ProviderScope(
-    child: const MaterialApp(
-      home: Login(),
+  runApp(
+    ProviderScope(
+      child: const MaterialApp(
+        home: Login(),
+      ),
     ),
-  ));
+  );
 }

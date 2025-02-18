@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:kalakalikasan/widgets/actors/station_map.dart';
-import 'package:kalakalikasan/widgets/under_construction.dart';
 
 class NearbyStationScreen extends StatelessWidget {
   const NearbyStationScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     double h = MediaQuery.of(context).size.height;
     double w = MediaQuery.of(context).size.width;
-    // TODO: implement build
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,

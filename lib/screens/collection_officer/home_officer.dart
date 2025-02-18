@@ -3,7 +3,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:kalakalikasan/screens/collection_officer/collection_metric.dart';
 import 'package:kalakalikasan/screens/eco_actor/collection_schedules.dart';
 import 'package:kalakalikasan/screens/eco_actor/user_transactions.dart';
-import 'package:kalakalikasan/screens/login.dart';
 import 'package:kalakalikasan/widgets/actors/dashboard_nav_item.dart';
 
 class HomeOfficer extends StatelessWidget {

@@ -3,9 +3,9 @@ import 'package:kalakalikasan/screens/collection_officer/material_selections.dar
 import 'package:kalakalikasan/screens/collection_officer/physical_cashout.dart';
 
 class QrResultScreen extends StatelessWidget {
+  const QrResultScreen({super.key});
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
       appBar: AppBar(
         foregroundColor: Colors.white,

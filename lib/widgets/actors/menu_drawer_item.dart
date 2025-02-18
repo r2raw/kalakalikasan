@@ -8,7 +8,6 @@ class MenuDrawerItem extends StatelessWidget {
   final void Function() onSelect;
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return InkWell(
       onTap: onSelect,
       child: Container(

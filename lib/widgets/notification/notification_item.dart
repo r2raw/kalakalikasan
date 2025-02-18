@@ -1,18 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:kalakalikasan/util/validation.dart';
 
 const lorem =
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
 
 class NotificationItem extends StatelessWidget {
-  const NotificationItem({super.key, this.isRead, required this.notifTitle});
+  const NotificationItem(
+      {super.key,
+      this.isRead,
+      required this.notifTitle,
+      required this.message,
+      required this.notifDate});
   final String notifTitle;
+  final String message;
+  final Map<String, dynamic> notifDate;
   final bool? isRead;
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+      padding: EdgeInsets.symmetric(horizontal: 20, vertical:10),
       decoration: BoxDecoration(
           color: isRead == null || isRead!
               ? Colors.white
@@ -43,11 +51,11 @@ class NotificationItem extends StatelessWidget {
                           Text(notifTitle)
                         ],
                       ),
-                      Text('5h ago.')
+                      Text(timeAgo(notifDate))
                     ],
                   ),
                   Text(
-                    lorem,
+                    message,
                     maxLines: 3,
                     overflow: TextOverflow.ellipsis,
                   ),

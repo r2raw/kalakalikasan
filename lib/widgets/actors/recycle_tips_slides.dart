@@ -7,9 +7,8 @@ class RecycleTipsSlides extends ConsumerWidget {
   
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // TODO: implement build
     return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 20, 30, 150),
+      padding: const EdgeInsets.fromLTRB(20, 0, 30, 150),
       child: Column(
         children: [
           Padding(

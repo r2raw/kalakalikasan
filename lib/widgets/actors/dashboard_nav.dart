@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:kalakalikasan/screens/eco_actor/collection_schedules.dart';
-import 'package:kalakalikasan/screens/eco_actor/conversion_rates.dart';
-import 'package:kalakalikasan/screens/eco_actor/more.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kalakalikasan/provider/current_user_provider.dart';
 import 'package:kalakalikasan/screens/eco_actor/shop_registration.dart';
-import 'package:kalakalikasan/screens/my_shop_screen.dart';
 import 'package:kalakalikasan/screens/eco_actor/nearby_stations.dart';
 import 'package:kalakalikasan/screens/eco_actor/partner_stores.dart';
 import 'package:kalakalikasan/screens/eco_actor/point_exchange.dart';
@@ -11,18 +9,16 @@ import 'package:kalakalikasan/screens/eco_actor/referral.dart';
 import 'package:kalakalikasan/screens/eco_actor/user_transactions.dart';
 import 'package:kalakalikasan/widgets/actors/dashboard_nav_item.dart';
 
-class DashboardNav extends StatelessWidget {
+class DashboardNav extends ConsumerWidget {
   const DashboardNav({super.key});
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return GridView(
       padding: EdgeInsets.all(20),
       shrinkWrap: true,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 4,
-        mainAxisSpacing: 10
-      ),
-      children: const [
+          crossAxisCount: 3, mainAxisSpacing: 10),
+      children: [
         DashboardNavItem(
           icon: Icons.star_border,
           title: 'Exchange Points',
@@ -53,11 +49,12 @@ class DashboardNav extends StatelessWidget {
           title: 'Invite a friend',
           screen: ReferralScreen(),
         ),
-        DashboardNavItem(
-          icon: Icons.storefront_outlined,
-          title: 'Shop Registration',
-          screen: ShopRegistrationScreen(),
-        ),
+        if (ref.read(currentUserProvider)[CurrentUser.role] == 'actor')
+          DashboardNavItem(
+            icon: Icons.storefront_outlined,
+            title: 'Shop Registration',
+            screen: ShopRegistrationScreen(),
+          ),
       ],
     );
   }

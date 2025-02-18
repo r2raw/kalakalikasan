@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:kalakalikasan/screens/collection_officer/home_officer.dart';
-import 'package:kalakalikasan/screens/collection_officer/qr_result.dart';
 import 'package:kalakalikasan/screens/collection_officer/scan_qr.dart';
-import 'package:kalakalikasan/screens/eco_actor/collection_schedules.dart';
 import 'package:kalakalikasan/screens/eco_actor/community_updates.dart';
-import 'package:kalakalikasan/screens/login.dart';
 import 'package:kalakalikasan/screens/notification.dart';
 import 'package:kalakalikasan/screens/user_drawer.dart';
-import 'package:kalakalikasan/widgets/actors/dashboard_nav_item.dart';
 import 'package:kalakalikasan/widgets/officer_floating_nav.dart';
 
 class CollectionOfficerScreen extends StatefulWidget {

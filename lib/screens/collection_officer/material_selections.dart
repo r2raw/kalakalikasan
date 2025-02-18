@@ -7,7 +7,6 @@ class MaterialSelectionsScreen extends StatefulWidget {
 
   @override
   State<MaterialSelectionsScreen> createState() {
-    // TODO: implement createState
     return _MaterialSelectionsState();
   }
   
@@ -25,7 +24,6 @@ class _MaterialSelectionsState extends State<MaterialSelectionsScreen>{
   }
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     
     var h = MediaQuery.of(context).size.height;
     var w = MediaQuery.of(context).size.width;

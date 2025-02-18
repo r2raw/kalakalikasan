@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kalakalikasan/provider/current_user_provider.dart';
+import 'package:kalakalikasan/provider/notif_provider.dart';
 import 'dart:convert';
 import 'package:kalakalikasan/provider/screen_provider.dart';
 import 'package:kalakalikasan/provider/url_provider.dart';
@@ -7,6 +8,7 @@ import 'package:kalakalikasan/screens/collection_officer.dart';
 import 'package:kalakalikasan/screens/eco_actors.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
+import 'package:kalakalikasan/screens/forgot_password.dart';
 import 'package:kalakalikasan/screens/register.dart';
 import 'package:kalakalikasan/widgets/error_single.dart';
 
@@ -14,7 +16,6 @@ class Login extends ConsumerStatefulWidget {
   const Login({super.key});
   @override
   ConsumerState<Login> createState() {
-    // TODO: implement createState
     return _LoginState();
   }
 }
@@ -28,9 +29,11 @@ class _LoginState extends ConsumerState<Login> {
   void _onSaveForm() async {
     try {
       final url = Uri.http(ref.read(urlProvider), 'login-mobile');
+      // final url = Uri.https('kalakalikasan-server.onrender.com', 'login-mobile');
       if (_formKey.currentState!.validate()) {
         _formKey.currentState!.save();
 
+        ref.read(notifProvider.notifier).reset();
         setState(() {
           _isSending = true;
         });
@@ -54,7 +57,14 @@ class _LoginState extends ConsumerState<Login> {
         }
 
         if (response.statusCode == 200) {
-          final currentUser = json.decode(response.body)['userData'];
+          final decoded = json.decode(response.body);
+          final currentUser = decoded['userData'];
+
+          // final store = decoded['store'];
+
+          // if(store){
+
+          // }
           final userId = currentUser['id'];
           final userData = currentUser['data'];
           final userRole = userData['role'];
@@ -79,7 +89,7 @@ class _LoginState extends ConsumerState<Login> {
 
           ref.read(currentUserProvider.notifier).saveCurrentUser(resData);
 
-          if (userRole == 'actor') {
+          if (userRole != 'officer') {
             ref.read(screenProvider.notifier).swapScreen(0);
             Navigator.of(context).pushReplacement(
                 MaterialPageRoute(builder: (ctx) => EcoActors()));
@@ -98,6 +108,11 @@ class _LoginState extends ConsumerState<Login> {
   void _goToRegister() {
     Navigator.of(context)
         .pushReplacement(MaterialPageRoute(builder: (ctx) => RegisterScreen()));
+  }
+
+  void _goToPasswordReset() {
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (ctx) => ForgotPasswordScreen()));
   }
 
   // void _showDialog() {
@@ -213,7 +228,7 @@ class _LoginState extends ConsumerState<Login> {
                 ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color.fromARGB(255, 34, 76, 43),
+                    backgroundColor: Color.fromARGB(255, 32, 77, 44),
                     minimumSize: const Size(double.infinity, 50),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10)),
@@ -228,17 +243,17 @@ class _LoginState extends ConsumerState<Login> {
                   height: 20,
                 ),
                 TextButton(
-                    onPressed: () {},
-                    child: Text(
-                      'Forgot password',
-                      style: TextStyle(color: Color.fromARGB(255, 34, 76, 43)),
-                    )),
+                    onPressed: _goToPasswordReset,
+                    style: TextButton.styleFrom(
+                        overlayColor: Color.fromARGB(255, 38, 167, 72),
+                        foregroundColor: Color.fromARGB(255, 32, 77, 44)),
+                    child: Text('Forgot password')),
                 TextButton(
+                    style: TextButton.styleFrom(
+                        overlayColor: Color.fromARGB(255, 38, 167, 72),
+                        foregroundColor: Color.fromARGB(255, 32, 77, 44)),
                     onPressed: _goToRegister,
-                    child: Text(
-                      'Register',
-                      style: TextStyle(color: Color.fromARGB(255, 34, 76, 43)),
-                    )),
+                    child: Text('Register')),
               ],
             ),
           ),

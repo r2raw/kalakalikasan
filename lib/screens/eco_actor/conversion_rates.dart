@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:kalakalikasan/widgets/actors/conversion_rates_list.dart';
-import 'package:kalakalikasan/widgets/under_construction.dart';
 
 class ConversionRatesScreen extends StatelessWidget {
   const ConversionRatesScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     double h = MediaQuery.of(context).size.height;
     double w = MediaQuery.of(context).size.width;
-    // TODO: implement build
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,

@@ -7,12 +7,18 @@ import 'package:kalakalikasan/model/transactions_data.dart';
 
 const actorNav = [
   ActorNav(navIcon: Icons.home_outlined, index: 0),
-  ActorNav(navIcon: Icons.dashboard_outlined, index: 1),
-  ActorNav(navIcon: Icons.storefront, index: 2),
+  // ActorNav(navIcon: Icons.dashboard_outlined, index: 1),
+  ActorNav(navIcon: Icons.qr_code_scanner_outlined, index: 4),
   ActorNav(navIcon: Icons.newspaper_outlined, index: 3),
 ];
 
-
+const partnerNav = [
+  ActorNav(navIcon: Icons.home_outlined, index: 0),
+  // ActorNav(navIcon: Icons.dashboard_outlined, index: 1),
+  ActorNav(navIcon: Icons.qr_code_scanner_outlined, index: 4),
+  ActorNav(navIcon: Icons.storefront, index: 2),
+  ActorNav(navIcon: Icons.newspaper_outlined, index: 3),
+];
 
 const officerNav = [
   ActorNav(navIcon: Icons.home_outlined, index: 0),
@@ -191,12 +197,89 @@ const materialsData = [
   ),
 ];
 
+const dummyCart = [
+  {
+    'store_name': 'Lolit shop',
+    'items': [
+      {
+        'item_name': 'Fudgee Barr',
+        'quantity': 2,
+        'price': 8,
+      },
+      {
+        'item_name': 'Kopiko',
+        'quantity': 1,
+        'price': 15,
+      }
+    ]
+  },
+  {
+    'store_name': 'AAAA shop',
+    'items': [
+      {
+        'item_name': 'Sardines',
+        'quantity': 2,
+        'price': 25,
+      }
+    ]
+  },
+  {
+    'store_name': 'Lolit shop',
+    'items': [
+      {
+        'item_name': 'Fudgee Barr',
+        'quantity': 2,
+        'price': 8,
+      },
+      {
+        'item_name': 'Kopiko',
+        'quantity': 1,
+        'price': 15,
+      }
+    ]
+  },
+  {
+    'store_name': 'AAAA shop',
+    'items': [
+      {
+        'item_name': 'Sardines',
+        'quantity': 2,
+        'price': 25,
+      }
+    ]
+  },
+  {
+    'store_name': 'Lolit shop',
+    'items': [
+      {
+        'item_name': 'Fudgee Barr',
+        'quantity': 2,
+        'price': 8,
+      },
+      {
+        'item_name': 'Kopiko',
+        'quantity': 1,
+        'price': 15,
+      }
+    ]
+  },
+  {
+    'store_name': 'AAAA shop',
+    'items': [
+      {
+        'item_name': 'Sardines',
+        'quantity': 2,
+        'price': 25,
+      }
+    ]
+  }
+];
 
-const dummyProducts =  [
+const dummyProducts = [
   Product(title: 'Sardinas', price: 25, quantity: 20),
   Product(title: 'Safeguard', price: 24, quantity: 23),
   Product(title: 'Tide', price: 13, quantity: 40),
-  Product(title: 'Eskinol', price:53, quantity: 30),
+  Product(title: 'Eskinol', price: 53, quantity: 30),
   Product(title: 'Colgate', price: 12, quantity: 41),
   Product(title: 'Piattos', price: 19, quantity: 23),
   Product(title: 'Combi', price: 8, quantity: 32),
@@ -204,24 +287,24 @@ const dummyProducts =  [
   Product(title: 'Fudgee Barr', price: 8, quantity: 24),
   Product(title: 'Inipit', price: 8, quantity: 24),
   Product(title: 'Palmolive', price: 9, quantity: 20),
-  Product(title: 'Rexona', price:10, quantity: 20),
+  Product(title: 'Rexona', price: 10, quantity: 20),
   Product(title: 'X-Sakto', price: 10, quantity: 20),
   Product(title: 'Cloud-9', price: 12, quantity: 20),
   Product(title: 'Polvoron', price: 2, quantity: 20),
   Product(title: 'SunSilk', price: 9, quantity: 20),
 ];
 
-
-
 const dummyProductRequest = [
   ProductTradeRequest(requestedProducts: [
-  Product(title: 'Sardinas', price: 25, quantity: 2),
-  Product(title: 'Safeguard', price: 24, quantity: 3),
-  Product(title: 'Tide', price: 13, quantity: 4),], name: 'Juan Dela Cruz'),
+    Product(title: 'Sardinas', price: 25, quantity: 2),
+    Product(title: 'Safeguard', price: 24, quantity: 3),
+    Product(title: 'Tide', price: 13, quantity: 4),
+  ], name: 'Juan Dela Cruz'),
   ProductTradeRequest(requestedProducts: [
-  Product(title: 'Hani', price: 3, quantity: 2),
-  Product(title: 'Fudgee Barr', price: 8, quantity: 2),
-  Product(title: 'Inipit', price: 8, quantity: 24),
-  Product(title: 'Palmolive', price: 9, quantity: 2),
-  Product(title: 'Rexona', price:10, quantity: 20),], name: 'Deo Balbuena'),
+    Product(title: 'Hani', price: 3, quantity: 2),
+    Product(title: 'Fudgee Barr', price: 8, quantity: 2),
+    Product(title: 'Inipit', price: 8, quantity: 24),
+    Product(title: 'Palmolive', price: 9, quantity: 2),
+    Product(title: 'Rexona', price: 10, quantity: 20),
+  ], name: 'Deo Balbuena'),
 ];

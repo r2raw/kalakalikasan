@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kalakalikasan/data/dummy_data.dart';
 import 'package:kalakalikasan/provider/transaction_provider.dart';
 import 'package:kalakalikasan/widgets/actors/transaction_item.dart';
 import 'package:kalakalikasan/model/transactions_data.dart';

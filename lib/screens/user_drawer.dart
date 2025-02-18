@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kalakalikasan/provider/current_user_provider.dart';
 import 'package:kalakalikasan/provider/screen_provider.dart';
 import 'package:kalakalikasan/screens/login.dart';
+import 'package:kalakalikasan/util/text_truncate.dart';
 import 'package:kalakalikasan/widgets/actors/menu_drawer_item.dart';
 
 class UserDrawer extends ConsumerWidget {
@@ -13,10 +14,9 @@ class UserDrawer extends ConsumerWidget {
     final firstName = ref.watch(currentUserProvider)[CurrentUser.firstName].toString().toUpperCase();
     final lastName = ref.watch(currentUserProvider)[CurrentUser.lastName].toString().toUpperCase();
     final email = ref.watch(currentUserProvider)[CurrentUser.email].toString();
-    final fullName = '$firstName $lastName';
+    final fullName = textTruncate('$firstName $lastName', 17);
     double h = MediaQuery.of(context).size.height;
     double w = MediaQuery.of(context).size.width;
-    // TODO: implement build
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,

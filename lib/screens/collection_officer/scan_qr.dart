@@ -1,40 +1,23 @@
-import 'dart:typed_data';
+
 
 import 'package:flutter/material.dart';
 import 'package:kalakalikasan/screens/collection_officer/qr_result.dart';
 import 'package:kalakalikasan/screens/collection_officer/username_input_option.dart';
-import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:kalakalikasan/widgets/my_scanner.dart';
 
 class ScanQr extends StatelessWidget {
+  const ScanQr({super.key});
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
+  void goToResult(){
+    Navigator.push(context, MaterialPageRoute(builder: (ctx)=> QrResultScreen()));
+  }
     return Container(
       width: double.infinity,
       padding: EdgeInsets.symmetric(horizontal: 20),
       child: Column(
         children: [
-          Container(
-            width: double.infinity,
-            height: 300,
-            decoration: BoxDecoration(color: Colors.red),
-            child: MobileScanner(
-              controller: MobileScannerController(
-                detectionSpeed: DetectionSpeed.noDuplicates,
-                returnImage: true,
-              ),
-              onDetect: (capture) {
-                // print('capture');
-                final List<Barcode> barcodes = capture.barcodes;
-                final Uint8List? image = capture.image;
-                for (final barcode in barcodes) {
-                  // print('Barcode found! ${barcode.rawValue}');
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (ctx) => QrResultScreen()));
-                }
-              },
-            ),
-          ),
+          MyScanner(goToResult: goToResult),
           SizedBox(
             height: 20,
           ),
@@ -53,7 +36,10 @@ class ScanQr extends StatelessWidget {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10)),
             ),
-            onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (ctx)=>UsernameInputOption()));},
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (ctx) => UsernameInputOption()));
+            },
             child: Text(
               'Enter a username',
               style: TextStyle(

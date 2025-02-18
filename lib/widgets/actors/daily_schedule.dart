@@ -10,7 +10,6 @@ class DailySchedule extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final curr_day = dayFormat.format(date);
-    // TODO: implement build
     return Column(
       children: [
         Text(curr_day),

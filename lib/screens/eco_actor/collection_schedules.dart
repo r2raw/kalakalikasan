@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:kalakalikasan/widgets/actors/schedule_list.dart';
 import 'package:kalakalikasan/widgets/actors/weekly_schedule.dart';
-import 'package:kalakalikasan/widgets/under_construction.dart';
 
 class CollectionSchedulesScreen extends StatelessWidget {
   const CollectionSchedulesScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     double h = MediaQuery.of(context).size.height;
     double w = MediaQuery.of(context).size.width;
-
-    // TODO: implement build
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,

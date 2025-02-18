@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:kalakalikasan/data/dummy_data.dart';
-import 'package:kalakalikasan/screens/collection_officer/qr_result.dart';
-import 'package:kalakalikasan/screens/user_drawer.dart';
-
 class OfficerFloatingNav extends StatelessWidget {
   const OfficerFloatingNav({super.key, required this.onTabSelect});
   final void Function(int index) onTabSelect;
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Card(
       margin: EdgeInsets.only(left: 20, right: 20, bottom: 40),
       child: Container(

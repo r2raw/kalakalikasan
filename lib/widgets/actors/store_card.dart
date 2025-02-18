@@ -6,7 +6,6 @@ class StoreCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return InkWell(
       onTap: () {
         Navigator.push(

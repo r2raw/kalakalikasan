@@ -6,7 +6,6 @@ class ActorProductList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Expanded(
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),

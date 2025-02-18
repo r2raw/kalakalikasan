@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kalakalikasan/provider/current_user_provider.dart';
+import 'package:kalakalikasan/provider/user_store_provider.dart';
+import 'package:kalakalikasan/widgets/actors/cart_button.dart';
 import 'package:kalakalikasan/widgets/actors/store_card.dart';
 import 'package:kalakalikasan/widgets/officers/floating_reg_store_btn.dart';
 
-class PartnerStoresScreen extends StatelessWidget {
+class PartnerStoresScreen extends ConsumerWidget {
   const PartnerStoresScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
+  Widget build(BuildContext context, WidgetRef ref) {
+    final userStore = ref.read(userStoreProvider);
     double h = MediaQuery.of(context).size.height;
     double w = MediaQuery.of(context).size.width;
-    // TODO: implement build
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -68,7 +71,8 @@ class PartnerStoresScreen extends StatelessWidget {
                       StoreCard(),
                     ],
                   ),
-                  FloatingRegStoreBtn()
+                  if (userStore.isEmpty && ref.read(currentUserProvider)[CurrentUser.role]  == 'actor') FloatingRegStoreBtn(),
+                  CartButton(),
                 ],
               ),
             )

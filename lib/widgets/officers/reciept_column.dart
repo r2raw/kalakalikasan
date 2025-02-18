@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:kalakalikasan/data/dummy_data.dart';
 import 'dart:io';
 import 'package:kalakalikasan/screens/collection_officer.dart';
-import 'package:kalakalikasan/screens/collection_officer/home_officer.dart';
 
 double get totalEC {
   double total = 0;

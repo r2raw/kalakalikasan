@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:kalakalikasan/widgets/actors/daily_schedule.dart';
 
 class WeeklySchedule extends StatefulWidget {
   const WeeklySchedule({super.key});
   @override
   State<WeeklySchedule> createState() {
-    // TODO: implement createState
     return _WeeklyScheduleState();
   }
 }
@@ -25,7 +23,6 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
       return startOfWeek.add(Duration(days: index + (7 * _currentWeekIndex)));
     });
 
-    // TODO: implement build
 
     // return Container(
     //   width: 400,
