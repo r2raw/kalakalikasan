@@ -11,19 +11,25 @@ class NotificationFilter extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Expanded(
-            child: Text(
-              'Filter',
-              style: TextStyle(fontWeight: FontWeight.bold, letterSpacing: 2),
-            ),
+          Text(
+            'Filter',
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                letterSpacing: 2,
+                color: Theme.of(context).primaryColor),
           ),
-          Container(
-            width: 300,
+          SizedBox(
+            width: 8,
+          ),
+          Expanded(
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
                 children: [
                   ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Theme.of(context).colorScheme.surface,
+                        foregroundColor: Theme.of(context).primaryColor),
                     onPressed: () {},
                     child: Text('All'),
                   ),
@@ -31,20 +37,19 @@ class NotificationFilter extends StatelessWidget {
                     width: 10,
                   ),
                   ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Theme.of(context).colorScheme.surface,
+                        foregroundColor: Theme.of(context).primaryColor),
                     onPressed: () {},
                     child: Text('Transactions'),
                   ),
                   SizedBox(
                     width: 10,
-                  ),
-                  ElevatedButton(
-                    onPressed: () {},
-                    child: Text('Schedules'),
                   )
                 ],
               ),
             ),
-          ), 
+          ),
         ],
       ),
     );

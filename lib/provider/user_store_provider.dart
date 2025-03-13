@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 enum UserStore {
+  id,
   storeName,
   storeLogo,
   street,
@@ -15,13 +16,21 @@ enum UserStore {
   rejectionDate,
   rejectionReason,
   status,
-
 }
+
 class UserStoreNotifier extends StateNotifier<Map<UserStore, dynamic>> {
   UserStoreNotifier() : super({});
 
   void saveStore(Map<UserStore, dynamic> userData) {
     state = userData;
+  }
+
+  void updateStore(Map<UserStore, dynamic> userData) {
+    state = {...state, ...userData};
+  }
+
+  void reset() {
+    state = {};
   }
 }
 

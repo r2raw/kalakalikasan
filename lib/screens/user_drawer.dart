@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kalakalikasan/provider/cart_provider.dart';
 import 'package:kalakalikasan/provider/current_user_provider.dart';
 import 'package:kalakalikasan/provider/screen_provider.dart';
+import 'package:kalakalikasan/provider/user_store_provider.dart';
 import 'package:kalakalikasan/screens/login.dart';
 import 'package:kalakalikasan/util/text_truncate.dart';
 import 'package:kalakalikasan/widgets/actors/menu_drawer_item.dart';
@@ -25,8 +27,6 @@ class UserDrawer extends ConsumerWidget {
           decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                // Color.fromARGB(255, 141, 253, 120),
-                // Color.fromARGB(255, 0, 131, 89)
                 Color.fromARGB(255, 72, 114, 50),
                 Color.fromARGB(255, 32, 77, 44)
               ],
@@ -42,8 +42,6 @@ class UserDrawer extends ConsumerWidget {
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              // Color.fromARGB(255, 141, 253, 120),
-              // Color.fromARGB(255, 0, 131, 89)
               Color.fromARGB(255, 72, 114, 50),
               Color.fromARGB(255, 32, 77, 44)
             ],
@@ -63,7 +61,7 @@ class UserDrawer extends ConsumerWidget {
                       Icon(
                         Icons.person,
                         size: 50,
-                        color: Colors.white,
+                        color:  Colors.white,
                       ),
                       SizedBox(
                         width: 10,
@@ -75,13 +73,13 @@ class UserDrawer extends ConsumerWidget {
                             fullName,
                             style: TextStyle(
                               fontSize: 24,
-                              color: Colors.white,
+                              color:  Colors.white,
                             ),
                           ),
                           Text(email,
                               style: TextStyle(
                                 fontSize: 16,
-                                color: Colors.white,
+                                color:  Colors.white,
                               ))
                         ],
                       ),
@@ -98,8 +96,8 @@ class UserDrawer extends ConsumerWidget {
               child: Container(
                 width: double.infinity,
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                decoration: const BoxDecoration(
-                  color: Color.fromARGB(255, 233, 233, 233),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).canvasColor,
                 ),
                 child: Card(
                   child: Container(
@@ -167,7 +165,9 @@ class UserDrawer extends ConsumerWidget {
                                 borderRadius: BorderRadius.circular(10)),
                           ),
                           onPressed: () {
-                            Navigator.pop(context);
+                            ref.read(userStoreProvider.notifier).reset();
+                            ref.read(cartProvider.notifier).reset();
+                            Navigator.of(context).pop();
                             Navigator.pushReplacement(context,
                                 MaterialPageRoute(builder: (ctx) => Login()));
                           },

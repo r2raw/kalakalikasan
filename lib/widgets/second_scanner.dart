@@ -1,0 +1,122 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kalakalikasan/provider/scan_provider.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
+import 'dart:typed_data';
+
+
+class SecondScanner extends ConsumerStatefulWidget {
+  const SecondScanner({super.key, required this.goToResult});
+
+  final void Function() goToResult;
+  @override
+  ConsumerState<SecondScanner> createState() {
+    return _SecondScanner();
+  }
+}
+class _SecondScanner extends ConsumerState<SecondScanner> {
+  String? detectedBarcode;
+  void onDetectCode(String? barcode) {
+    if (barcode != null) {
+      String barcodeString = barcode;
+      if (barcode.length == 13) {
+        barcodeString = barcode.substring(0, 12);
+      }
+
+      ref.read(scanProvider.notifier).saveScannedId(barcodeString);
+      widget.goToResult();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   if (detectedBarcode != null) {
+    //     String barcodeString = detectedBarcode!;
+    //     if(detectedBarcode!.length == 13){
+    //       barcodeString = detectedBarcode!.substring(0, 12);
+    //     }
+
+    //     ref.read(scanProvider.notifier).saveScannedId(barcodeString);
+    //     widget.goToResult();
+    //   }
+    // });
+
+    return Stack(
+      children: [
+        Container(
+          width: double.infinity,
+          height: 300,
+          decoration: BoxDecoration(color: Colors.red),
+          child: MobileScanner(
+            controller: MobileScannerController(
+              detectionSpeed: DetectionSpeed.noDuplicates,
+              returnImage: true,
+            ),
+            onDetect: (capture) {
+              // print('capture');
+              final List<Barcode> barcodes = capture.barcodes;
+              final Uint8List? image = capture.image;
+              for (final barcode in barcodes) {
+                print('SCANNED ${barcode.rawValue}');
+                print('Barcode found! ${barcode.rawValue}');
+                // setState(() {
+                //   detectedBarcode = barcode.rawValue;
+                // });
+
+                onDetectCode(barcode.rawValue);
+                return;
+              }
+            },
+          ),
+        ),
+        _buildScanOverlay()
+      ],
+    );
+  }
+}
+class QRBorderPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = Color.fromARGB(255, 38, 167, 72)
+      ..strokeWidth = 4
+      ..style = PaintingStyle.stroke;
+
+    const borderLength = 40.0;
+
+    // Draw the four corner borders
+    Path path = Path();
+    path.moveTo(0, borderLength);
+    path.lineTo(0, 0);
+    path.lineTo(borderLength, 0);
+
+    path.moveTo(size.width, borderLength);
+    path.lineTo(size.width, 0);
+    path.lineTo(size.width - borderLength, 0);
+
+    path.moveTo(0, size.height - borderLength);
+    path.lineTo(0, size.height);
+    path.lineTo(borderLength, size.height);
+
+    path.moveTo(size.width, size.height - borderLength);
+    path.lineTo(size.width, size.height);
+    path.lineTo(size.width - borderLength, size.height);
+
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return false;
+  }
+}
+
+Widget _buildScanOverlay() {
+  return Center(
+    child: CustomPaint(
+      size: Size(double.infinity, 300),
+      painter: QRBorderPainter(),
+    ),
+  );
+}

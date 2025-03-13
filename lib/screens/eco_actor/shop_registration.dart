@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:io';
-
+import 'package:kalakalikasan/util/text_casing.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,6 +10,7 @@ import 'package:kalakalikasan/provider/url_provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:kalakalikasan/provider/user_store_provider.dart';
 import 'package:kalakalikasan/screens/eco_actors.dart';
+import 'package:kalakalikasan/widgets/loading_lg.dart';
 import 'dart:convert';
 
 import 'package:kalakalikasan/widgets/text_error_default.dart';
@@ -96,8 +97,7 @@ class _ShopRegistrationScreen extends ConsumerState<ShopRegistrationScreen> {
           return;
         }
 
-        final checkStoreUrl = Uri.http(ref.read(urlProvider), 'verify-store');
-        // final checkStoreUrl = Uri.https('kalakalikasan-server.onrender.com', 'verify-store');
+        final checkStoreUrl = Uri.https('kalakalikasan-server.onrender.com', 'verify-store');
         final storeCheckRes = await http.post(
           checkStoreUrl,
           headers: {"Content-type": "application/json"},
@@ -120,9 +120,8 @@ class _ShopRegistrationScreen extends ConsumerState<ShopRegistrationScreen> {
           return;
         }
 
-        final url = Uri.http(ref.read(urlProvider), 'register-store');
-        
-        // final url = Uri.https('kalakalikasan-server.onrender.com', 'register-store');
+
+        final url = Uri.https('kalakalikasan-server.onrender.com', 'register-store');
         final request = http.MultipartRequest('POST', url)
           ..headers.addAll({'Content-type': 'multipart/form-data'})
           ..fields.addAll(storeInfo);
@@ -204,6 +203,10 @@ class _ShopRegistrationScreen extends ConsumerState<ShopRegistrationScreen> {
           setState(() {
             _isSending = false;
           });
+
+          if (!context.mounted) {
+            return;
+          }
           Navigator.of(context).pop();
         }
       }
@@ -287,7 +290,8 @@ class _ShopRegistrationScreen extends ConsumerState<ShopRegistrationScreen> {
   Future _pickImageFromGallery() async {
     final returnedImage =
         await ImagePicker().pickImage(source: ImageSource.gallery);
-    Navigator.pop(context);
+
+    Navigator.of(context).pop();
     if (returnedImage == null) return;
     setState(() {
       _selectedImage = File(returnedImage.path);
@@ -306,7 +310,7 @@ class _ShopRegistrationScreen extends ConsumerState<ShopRegistrationScreen> {
   Future _pickImageFromCamera() async {
     final returnedImage =
         await ImagePicker().pickImage(source: ImageSource.camera);
-    Navigator.pop(context);
+    Navigator.of(context).pop();
 
     if (returnedImage == null) return;
 
@@ -381,6 +385,7 @@ class _ShopRegistrationScreen extends ConsumerState<ShopRegistrationScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   TextFormField(
+                    maxLength: 50,
                     style: TextStyle(color: Color.fromARGB(255, 32, 77, 44)),
                     decoration: InputDecoration(
                       fillColor: Color.fromARGB(255, 32, 77, 44),
@@ -467,6 +472,7 @@ class _ShopRegistrationScreen extends ConsumerState<ShopRegistrationScreen> {
                   ),
                   //>>>>>>>>>>>>>> Street name
                   TextFormField(
+                    maxLength: 100,
                     style: TextStyle(color: Color.fromARGB(255, 32, 77, 44)),
                     decoration: InputDecoration(
                       fillColor: Color.fromARGB(255, 32, 77, 44),
@@ -486,7 +492,7 @@ class _ShopRegistrationScreen extends ConsumerState<ShopRegistrationScreen> {
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Store name is required';
+                        return 'Street name is required';
                       }
                       return null;
                     },
@@ -705,9 +711,10 @@ class _ShopRegistrationScreen extends ConsumerState<ShopRegistrationScreen> {
           SizedBox(
             height: 16,
           ),
-          ElevatedButton(
+          if(_isSending) LoadingLg(20),
+          if(!_isSending)ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: Color.fromARGB(255, 34, 76, 43),
+              backgroundColor: Color.fromARGB(255, 32, 77, 44),
               minimumSize: const Size(double.infinity, 50),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10)),
@@ -722,35 +729,70 @@ class _ShopRegistrationScreen extends ConsumerState<ShopRegistrationScreen> {
       ),
     );
 
-    final storeInfo = ref.watch(userStoreProvider);
-    print(storeInfo);
+    final storeInfo = ref.read(userStoreProvider);
+    
     if (storeInfo.keys.isNotEmpty) {
-      content = Text('pending');
+      content = Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Status:',
+                style: TextStyle(
+                  color: Color.fromARGB(255, 32, 77, 44),
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(toTitleCase(storeInfo[UserStore.status]),
+                  style: TextStyle(
+                    color: Color.fromARGB(255, 32, 77, 44),
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ))
+            ],
+          ),
+          Card(
+            child: Column(
+              children: [
+                if (storeInfo[UserStore.storeLogo] != null)
+                  Image.network(
+                    'https://kalakalikasan-server.onrender.com/store-cred/store_logo/${storeInfo[UserStore.storeLogo]}',
+                    width: 50,
+                    height: 50,
+                  )
+              ],
+            ),
+          ),
+        ],
+      );
     }
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        foregroundColor: Colors.white,
+        foregroundColor: Theme.of(context).primaryColor,
         flexibleSpace: Container(
           decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                // Color.fromARGB(255, 141, 253, 120),
-                // Color.fromARGB(255, 0, 131, 89)
-                Color.fromARGB(255, 72, 114, 50),
-                Color.fromARGB(255, 32, 77, 44)
-              ],
-              begin: Alignment.centerRight,
-              end: Alignment.centerLeft,
-            ),
+            // gradient: LinearGradient(
+            //   colors: [
+            //     // Color.fromARGB(255, 141, 253, 120),
+            //     // Color.fromARGB(255, 0, 131, 89)
+            //     Color.fromARGB(255, 72, 114, 50),
+            //     Color.fromARGB(255, 32, 77, 44)
+            //   ],
+            //   begin: Alignment.centerRight,
+            //   end: Alignment.centerLeft,
+            // ),
           ),
         ),
         title: const Text('Shop Registration'),
       ),
       body: Container(
+        width: w,
         height: h,
         decoration: BoxDecoration(
-          color: Color.fromARGB(255, 233, 233, 233),
+          // color: Color.fromARGB(255, 233, 233, 233),
         ),
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         child: SingleChildScrollView(

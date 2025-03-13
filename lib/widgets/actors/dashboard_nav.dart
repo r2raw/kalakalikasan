@@ -13,15 +13,17 @@ class DashboardNav extends ConsumerWidget {
   const DashboardNav({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final role = ref.read(currentUserProvider)[CurrentUser.role];
     return GridView(
-      padding: EdgeInsets.all(20),
+      padding: EdgeInsets.symmetric(vertical: 10),
       shrinkWrap: true,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3, mainAxisSpacing: 10),
+      gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: role == 'actor' ? 4 : 3, 
+          mainAxisSpacing: 8),
       children: [
         DashboardNavItem(
-          icon: Icons.star_border,
-          title: 'Exchange Points',
+          icon: Icons.qr_code,
+          title: 'My QR',
           screen: PointExchangeScreen(),
         ),
         DashboardNavItem(
@@ -29,11 +31,11 @@ class DashboardNav extends ConsumerWidget {
           title: 'Eco-Partner Stores',
           screen: PartnerStoresScreen(),
         ),
-        DashboardNavItem(
-          icon: Icons.pin_drop,
-          title: 'Nearby Stations',
-          screen: NearbyStationScreen(),
-        ),
+        // DashboardNavItem(
+        //   icon: Icons.pin_drop,
+        //   title: 'Nearby Stations',
+        //   screen: NearbyStationScreen(),
+        // ),
         // DashboardNavItem(
         //   icon: Icons.compare_arrows_outlined,
         //   title: 'Conversion Rates',
@@ -44,12 +46,12 @@ class DashboardNav extends ConsumerWidget {
           title: 'Transactions',
           screen: UserTransactionsScreen(),
         ),
-        DashboardNavItem(
-          icon: Icons.favorite,
-          title: 'Invite a friend',
-          screen: ReferralScreen(),
-        ),
-        if (ref.read(currentUserProvider)[CurrentUser.role] == 'actor')
+        // DashboardNavItem(
+        //   icon: Icons.favorite,
+        //   title: 'Invite a friend',
+        //   screen: ReferralScreen(),
+        // ),
+        if (role == 'actor')
           DashboardNavItem(
             icon: Icons.storefront_outlined,
             title: 'Shop Registration',

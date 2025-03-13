@@ -1,12 +1,102 @@
-import 'package:flutter/material.dart';
-import 'package:kalakalikasan/screens/eco_actor/actor_product_list.dart';
+import 'dart:convert';
 
-class StoreProducts extends StatelessWidget {
-  const StoreProducts({super.key});
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kalakalikasan/model/product.dart';
+import 'package:kalakalikasan/model/store.dart';
+import 'package:kalakalikasan/provider/url_provider.dart';
+import 'package:kalakalikasan/screens/eco_actor/actor_product_list.dart';
+import 'package:http/http.dart' as http;
+import 'package:kalakalikasan/widgets/actors/cart_button.dart';
+import 'package:kalakalikasan/widgets/loading_lg.dart';
+
+class StoreProducts extends ConsumerStatefulWidget {
+  const StoreProducts({super.key, required this.storeInfo});
+  final Store storeInfo;
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() {
+    return _StoreProducts();
+  }
+}
+
+class _StoreProducts extends ConsumerState<StoreProducts> {
+  List<Product> productList = [];
+  bool _isFetching = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _loadProducts();
+  }
+
+  void _loadProducts() async {
+    final storeInfo = widget.storeInfo;
+
+    try {
+      setState(() {
+        _isFetching = true;
+      });
+
+      final url = Uri.https('kalakalikasan-server.onrender.com', 'fetch-available-products/${storeInfo.storeId}');
+      final response = await http.get(url);
+
+      print('fetching products');
+      if (response.statusCode == 200) {
+        print('fetching products');
+        final decoded = json.decode(response.body);
+
+        final loadedProducts = decoded['products'];
+        List<Product> productCopy = [];
+        for (final product in loadedProducts) {
+          print('quantity ${product['quantity']}');
+          productCopy.add(Product(
+              productId: product['id'],
+              title: product['productName'],
+              price: product['price'],
+              quantity: product['quantity'],
+              logo: product['productImage'] ?? ''));
+        }
+
+        setState(() {
+          productList = productCopy;
+          _isFetching = false;
+        });
+      }
+    } catch (e) {
+      print('error fetching: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
+    final filteredProducts = productList;
+    final storeInfo = widget.storeInfo;
+    Widget content = Center(
+      child: Text('No products listed yet!'),
+    );
+
+    if (_isFetching) {
+      content = const Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          LoadingLg(50),
+          SizedBox(
+            height: 12,
+          ),
+          Text('Loading poducts...'),
+        ],
+      );
+    }
+    if (productList.isNotEmpty) {
+      content = Stack(
+        children: [
+          ActorProductList(productList: filteredProducts, storeInfo: storeInfo),
+          Positioned(bottom: 30, right: 10, child: CartButton())
+        ],
+      );
+    }
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -46,7 +136,7 @@ class StoreProducts extends StatelessWidget {
                         width: 20,
                       ),
                       Text(
-                        'Store name',
+                        storeInfo.storeName,
                         style: TextStyle(
                             fontSize: 24, fontWeight: FontWeight.bold),
                       )
@@ -54,7 +144,7 @@ class StoreProducts extends StatelessWidget {
                   ),
                   TextField(
                     decoration: InputDecoration(
-                      label: Text('Enter Product Name'),
+                      label: Text('Search Product Name'),
                     ),
                   ),
                 ],
@@ -63,7 +153,7 @@ class StoreProducts extends StatelessWidget {
             SizedBox(
               height: 20,
             ),
-            ActorProductList(),
+            Expanded(child: content),
           ],
         ),
       ),

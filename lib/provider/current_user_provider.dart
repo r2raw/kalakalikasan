@@ -17,12 +17,16 @@ enum CurrentUser {
   role,
   sex,
   status,
+  qr,
 }
 class CurrentUserNotifier extends StateNotifier<Map<CurrentUser, dynamic>> {
   CurrentUserNotifier() : super({});
 
   void saveCurrentUser(Map<CurrentUser, dynamic> userData) {
     state = userData;
+  }
+  void updateUser(Map<CurrentUser, dynamic> userData) {
+    state = {...state, ...userData};
   }
 }
 

@@ -2,10 +2,12 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kalakalikasan/main.dart';
 import 'package:kalakalikasan/provider/current_user_provider.dart';
 import 'package:kalakalikasan/provider/notif_provider.dart';
 import 'package:kalakalikasan/provider/screen_provider.dart';
 import 'package:kalakalikasan/provider/url_provider.dart';
+import 'package:kalakalikasan/provider/user_store_provider.dart';
 import 'package:kalakalikasan/screens/eco_actor/home_actor.dart';
 import 'package:kalakalikasan/screens/eco_actor/qr_actor.dart';
 import 'package:kalakalikasan/screens/my_shop_screen.dart';
@@ -24,8 +26,8 @@ class EcoActors extends ConsumerStatefulWidget {
   }
 }
 
-class _EcoActorsState extends ConsumerState<EcoActors> {
-  Map<Notif, dynamic>? notifs;
+class _EcoActorsState extends ConsumerState<EcoActors> with RouteAware {
+  Map<Notif, dynamic> notifs = {Notif.unread: [], Notif.read: []};
   @override
   void initState() {
     // TODO: implement initState
@@ -36,22 +38,34 @@ class _EcoActorsState extends ConsumerState<EcoActors> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _loadNotif(); // Reload when dependencies change (e.g., screen comes back)
-
-
-    // ref.listen<int>(screenProvider, (previous, next) {
-    //   if (previous != next) {
-    //     _loadNotif();
-    //   }
-    // });
+    print('dependencies changingaa');
+    _loadNotif();
+    // Ensure the current route is a PageRoute before subscribing
+    final ModalRoute<dynamic>? modalRoute = ModalRoute.of(context);
+    if (modalRoute is PageRoute<dynamic>) {
+      routeObserver.subscribe(this, modalRoute);
+    }
   }
+
+  @override
+  void dispose() {
+    print('disposing');
+    routeObserver.unsubscribe(this); // Unsubscribe when widget is removed
+    super.dispose();
+  }
+
+  // @override
+  // void didPopNext() {
+  //   final routeName = ModalRoute.of(context)?.settings.name;
+  //   print("🔄 didPopNext() TRIGGERED! Current Route: $routeName");
+  //   _loadNotif();
+  // }
 
   void _loadNotif() async {
     try {
-      print('eeeeeee');
       final userId = ref.read(currentUserProvider)[CurrentUser.id];
-      final url = Uri.http(ref.read(urlProvider), 'notifications/$userId');
-
+      final url = Uri.https(
+          'kalakalikasan-server.onrender.com', 'notifications/$userId');
       final response = await http.get(url);
 
       if (response.statusCode == 200) {
@@ -75,9 +89,29 @@ class _EcoActorsState extends ConsumerState<EcoActors> {
 
   @override
   Widget build(BuildContext context) {
-    final unreadNotifs = notifs![Notif.unread];
+    ref.watch(notifProvider);
+    final unreadNotifs = notifs[Notif.unread];
 
     final selectedScreenIndex = ref.watch(screenProvider);
+
+    BoxDecoration bg =  BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                // Color.fromARGB(255, 141, 253, 120),
+                // Color.fromARGB(255, 0, 131, 89)
+                Color.fromARGB(255, 72, 114, 50),
+                Color.fromARGB(255, 32, 77, 44)
+              ],
+              begin: Alignment.centerRight,
+              end: Alignment.centerLeft,
+            ),
+          );
+    ref.listen<int>(screenProvider, (previous, next) {
+      if (previous != next) {
+        _loadNotif();
+      }
+    });
+
     final userLastname = ref
         .watch(currentUserProvider)[CurrentUser.lastName]
         .toString()
@@ -87,18 +121,6 @@ class _EcoActorsState extends ConsumerState<EcoActors> {
         .toString()
         .toUpperCase();
     final fullName = '$userFirstname $userLastname';
-    BoxDecoration bg = BoxDecoration(
-      gradient: LinearGradient(
-        colors: const [
-          // Color.fromARGB(255, 141, 253, 120),
-          // Color.fromARGB(255, 0, 131, 89)
-          Color.fromARGB(255, 72, 114, 50),
-          Color.fromARGB(255, 32, 77, 44)
-        ],
-        begin: Alignment.centerRight,
-        end: Alignment.centerLeft,
-      ),
-    );
     double h = MediaQuery.of(context).size.height;
     Widget appBarTitle = InkWell(
       borderRadius: BorderRadius.circular(10),
@@ -156,7 +178,7 @@ class _EcoActorsState extends ConsumerState<EcoActors> {
     }
     if (selectedScreenIndex == 4) {
       content = QrActor();
-      bg = BoxDecoration(color: Color.fromARGB(255, 233, 233, 233));
+      // bg = BoxDecoration(color: Color.fromARGB(255, 233, 233, 233));
       appBarTitle = Text('Scan Receipt',
           style: TextStyle(
             fontSize: 20,
@@ -180,7 +202,7 @@ class _EcoActorsState extends ConsumerState<EcoActors> {
                     Icons.notifications,
                     size: 30,
                   ),
-                  if (notifs!.isNotEmpty && unreadNotifs.length > 0)
+                  if (notifs.isNotEmpty && unreadNotifs.length > 0)
                     Positioned(
                         top: 0,
                         left: 0,
@@ -202,7 +224,7 @@ class _EcoActorsState extends ConsumerState<EcoActors> {
               ))
         ],
         flexibleSpace: Container(
-          decoration: const BoxDecoration(
+          decoration:  BoxDecoration(
             gradient: LinearGradient(
               colors: [
                 // Color.fromARGB(255, 141, 253, 120),
@@ -221,7 +243,7 @@ class _EcoActorsState extends ConsumerState<EcoActors> {
         padding:
             EdgeInsets.fromLTRB(0, selectedScreenIndex == 0 ? 48 : 0, 0, 0),
         width: double.infinity,
-        decoration: bg,
+        // decoration: bg,
         child: Column(
           children: [
             Expanded(

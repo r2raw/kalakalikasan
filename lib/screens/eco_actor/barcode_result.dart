@@ -11,6 +11,7 @@ import 'package:kalakalikasan/provider/receipt_provider.dart';
 import 'package:kalakalikasan/provider/url_provider.dart';
 import 'package:kalakalikasan/screens/eco_actors.dart';
 import 'package:kalakalikasan/util/validation.dart';
+import 'package:kalakalikasan/widgets/loading_lg.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:ui' as ui;
 
@@ -24,6 +25,7 @@ class BarcodeResult extends ConsumerStatefulWidget {
 
 class _BarcodeResult extends ConsumerState<BarcodeResult> {
   List materials = [];
+  bool _isSending = false;
   @override
   void initState() {
     super.initState();
@@ -37,7 +39,10 @@ class _BarcodeResult extends ConsumerState<BarcodeResult> {
 
   void _onClaim() async {
     try {
-      final url = Uri.http(ref.read(urlProvider), 'receipt');
+      setState(() {
+        _isSending = true;
+      });
+      final url = Uri.https('kalakalikasan-server.onrender.com', 'receipt');
       final userid = ref.read(currentUserProvider)[CurrentUser.id];
       final transactionId =
           ref.read(receiptProvider)[ReceiptItem.transactionId];
@@ -53,6 +58,9 @@ class _BarcodeResult extends ConsumerState<BarcodeResult> {
       );
 
       if (response.statusCode == 200) {
+        setState(() {
+          _isSending = true;
+        });
         final int points = ref.read(receiptProvider)[ReceiptItem.points];
 
         final int currPoints = ref.read(pointsProvider);
@@ -131,163 +139,164 @@ class _BarcodeResult extends ConsumerState<BarcodeResult> {
           ),
         ),
       ),
-      body: Container(
-        padding: EdgeInsets.all(20),
-        decoration:
-            const BoxDecoration(color: Color.fromARGB(255, 233, 233, 233)),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Center(
-              child: RepaintBoundary(
-                key: _widgetKey,
-                child: ClipPath(
-                  clipper: TicketClipper(),
-                  child: Card(
-                    elevation: 1,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16)),
-                    child: Container(
-                      padding: EdgeInsets.all(20),
-                      width: double.infinity,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Image.asset('assets/images/kalakalikasan_icon.png',
-                              width: 96, height: 96),
-                          SizedBox(
-                            height: 12,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Transaction ID',
-                                style: TextStyle(
-                                    color: Color.fromARGB(255, 33, 77, 44)),
-                              ),
-                              Text(
-                                transactionId,
-                                style: TextStyle(
-                                    color: Color.fromARGB(255, 33, 77, 44),
-                                    fontWeight: FontWeight.bold),
-                              )
-                            ],
-                          ),
-                          SizedBox(
-                            height: 4,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Date',
-                                style: TextStyle(
-                                    color: Color.fromARGB(255, 33, 77, 44)),
-                              ),
-                              Text(
-                                transactionDate,
-                                style: TextStyle(
-                                    color: Color.fromARGB(255, 33, 77, 44),
-                                    fontWeight: FontWeight.bold),
-                              )
-                            ],
-                          ),
-                          SizedBox(
-                            height: 12,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text('Material',
-                                      style: TextStyle(
-                                          color:
-                                              Color.fromARGB(255, 33, 77, 44),
-                                          fontWeight: FontWeight.bold)),
-                                  for (final material in materials)
-                                    Text(
-                                      material['material_name'],
-                                      style: TextStyle(
-                                          color:
-                                              Color.fromARGB(255, 33, 77, 44)),
-                                    ),
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  Text('Grams',
-                                      style: TextStyle(
-                                          color:
-                                              Color.fromARGB(255, 33, 77, 44),
-                                          fontWeight: FontWeight.bold)),
-                                  for (final material in materials)
-                                    Text(
-                                      material['total_grams'].toString(),
-                                      style: TextStyle(
-                                          color:
-                                              Color.fromARGB(255, 33, 77, 44)),
-                                    ),
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  Text('Points',
-                                      style: TextStyle(
-                                          color:
-                                              Color.fromARGB(255, 33, 77, 44),
-                                          fontWeight: FontWeight.bold)),
-                                  for (final material in materials)
-                                    Text(
-                                      material['points_collected'].toString(),
-                                      style: TextStyle(
-                                          color:
-                                              Color.fromARGB(255, 33, 77, 44)),
-                                    ),
-                                ],
-                              )
-                            ],
-                          ),
-                          SizedBox(
-                            height: 16,
-                          ),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Image.asset(
-                                'assets/images/token-img.png',
-                                width: 30,
-                                height: 30,
-                              ),
-                              SizedBox(width: 4),
-                              Text(
-                                points.toString(),
-                                style: TextStyle(
-                                    fontSize: 30, fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
-                          // TextButton.icon(
-                          //   onPressed: () async {
-                          //     await _captureAndSave(context);
-                          //   },
-                          //   label: Text('Download receipt'),
-                          //   icon: Icon(Icons.download),
-                          // )
-                        ],
+      body: SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.all(20),
+          height: MediaQuery.of(context).size.height,
+          decoration:
+              const BoxDecoration(color: Color.fromARGB(255, 233, 233, 233)),
+          child: Column(
+            children: [
+              Center(
+                child: RepaintBoundary(
+                  key: _widgetKey,
+                  child: ClipPath(
+                    clipper: TicketClipper(),
+                    child: Card(
+                      elevation: 1,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16)),
+                      child: Container(
+                        padding: EdgeInsets.all(20),
+                        width: double.infinity,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Image.asset('assets/icons/basura_icon.png',
+                                width: 96, height: 96),
+                            SizedBox(
+                              height: 12,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Transaction ID',
+                                  style: TextStyle(
+                                      color: Color.fromARGB(255, 33, 77, 44)),
+                                ),
+                                Text(
+                                  transactionId,
+                                  style: TextStyle(
+                                      color: Color.fromARGB(255, 33, 77, 44),
+                                      fontWeight: FontWeight.bold),
+                                )
+                              ],
+                            ),
+                            SizedBox(
+                              height: 4,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Date',
+                                  style: TextStyle(
+                                      color: Color.fromARGB(255, 33, 77, 44)),
+                                ),
+                                Text(
+                                  transactionDate,
+                                  style: TextStyle(
+                                      color: Color.fromARGB(255, 33, 77, 44),
+                                      fontWeight: FontWeight.bold),
+                                )
+                              ],
+                            ),
+                            SizedBox(
+                              height: 12,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text('Material',
+                                        style: TextStyle(
+                                            color:
+                                                Color.fromARGB(255, 33, 77, 44),
+                                            fontWeight: FontWeight.bold)),
+                                    for (final material in materials)
+                                      Text(
+                                        material['material_name'],
+                                        style: TextStyle(
+                                            color:
+                                                Color.fromARGB(255, 33, 77, 44)),
+                                      ),
+                                  ],
+                                ),
+                                Column(
+                                  children: [
+                                    Text('Grams',
+                                        style: TextStyle(
+                                            color:
+                                                Color.fromARGB(255, 33, 77, 44),
+                                            fontWeight: FontWeight.bold)),
+                                    for (final material in materials)
+                                      Text(
+                                        material['total_grams'].toString(),
+                                        style: TextStyle(
+                                            color:
+                                                Color.fromARGB(255, 33, 77, 44)),
+                                      ),
+                                  ],
+                                ),
+                                Column(
+                                  children: [
+                                    Text('Points',
+                                        style: TextStyle(
+                                            color:
+                                                Color.fromARGB(255, 33, 77, 44),
+                                            fontWeight: FontWeight.bold)),
+                                    for (final material in materials)
+                                      Text(
+                                        material['points_collected'].toString(),
+                                        style: TextStyle(
+                                            color:
+                                                Color.fromARGB(255, 33, 77, 44)),
+                                      ),
+                                  ],
+                                )
+                              ],
+                            ),
+                            SizedBox(
+                              height: 16,
+                            ),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                  'assets/images/token-img.png',
+                                  width: 30,
+                                  height: 30,
+                                ),
+                                SizedBox(width: 4),
+                                Text(
+                                  points.toString(),
+                                  style: TextStyle(
+                                      fontSize: 30, fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                            // TextButton.icon(
+                            //   onPressed: () async {
+                            //     await _captureAndSave(context);
+                            //   },
+                            //   label: Text('Download receipt'),
+                            //   icon: Icon(Icons.download),
+                            // )
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ),
               ),
-            ),
-            SizedBox(height: 20,),
-            if (status != 'claimed')
-              
+              SizedBox(height: 20,),
+              if (status != 'completed' && _isSending) LoadingLg(20),
+              if (status != 'completed' && !_isSending)
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color.fromARGB(255, 32, 77, 44),
@@ -300,9 +309,9 @@ class _BarcodeResult extends ConsumerState<BarcodeResult> {
                     'Claim',
                     style: TextStyle(color: Colors.white),
                   ),
-                )
-              
-          ],
+                ),
+            ],
+          ),
         ),
       ),
     );

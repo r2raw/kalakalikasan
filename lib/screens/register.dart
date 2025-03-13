@@ -7,6 +7,7 @@ import 'package:kalakalikasan/widgets/registration/step_three.dart';
 import 'package:kalakalikasan/widgets/registration/step_two.dart';
 
 class RegisterScreen extends ConsumerStatefulWidget {
+  const RegisterScreen({super.key});
   @override
   ConsumerState<RegisterScreen> createState() {
     return _RegisterScreenState();

@@ -17,17 +17,20 @@ class CarbonSaveCard extends ConsumerStatefulWidget {
 }
 
 class _CarbonSaveCard extends ConsumerState<CarbonSaveCard> {
+  int grams = 0;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _loadPoints();
+    _loadGrams();
   }
 
   void _loadPoints() async {
     try {
       final userId = ref.read(currentUserProvider)[CurrentUser.id];
-      final url = Uri.http(ref.read(urlProvider), 'user-points/$userId');
+      final url =
+          Uri.https('kalakalikasan-server.onrender.com', 'user-points/$userId');
       final response = await http.get(url);
       if (response.statusCode == 200) {
         final decoded = json.decode(response.body);
@@ -38,6 +41,22 @@ class _CarbonSaveCard extends ConsumerState<CarbonSaveCard> {
     }
   }
 
+  void _loadGrams ()async{
+    try {
+      final userId = ref.read(currentUserProvider)[CurrentUser.id];
+      final url =
+          Uri.https('kalakalikasan-server.onrender.com', 'total-collected/$userId');
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        final decoded = json.decode(response.body);
+        setState(() {
+          grams = decoded['totalGrams'];
+        });
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
   @override
   Widget build(BuildContext context) {
     int currentPoints = ref.watch(pointsProvider);
@@ -51,50 +70,54 @@ class _CarbonSaveCard extends ConsumerState<CarbonSaveCard> {
         child: Card(
           clipBehavior: Clip.hardEdge,
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 7),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('500g',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 48)),
-                    Text(
-                      'Saved C02',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    )
-                  ],
-                ),
+                 Expanded(
+                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(grams.toString(),
+                          style: TextStyle(
+                                color: Theme.of(context).primaryColor,
+                              fontWeight: FontWeight.bold, fontSize: 30)),
+                              SizedBox(height: 12,),
+                              Text('Total waste submitted (Grams)', style: Theme.of(context).textTheme.headlineSmall,),
+                      
+                    ],
+                                   ),
+                 ),
                 Container(
                   width: 2,
                   height: double.infinity,
                   decoration:
                       BoxDecoration(color: Color.fromARGB(255, 201, 200, 200)),
                 ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            'assets/images/token-img.png',
-                            width: 50,
-                            height: 50,
-                          ),
-                          Text(
-                            currentPoints.toString(),
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 48),
-                          )
-                        ]),
-                    const Text('Eco Coins'),
-                  ],
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'assets/images/token-img.png',
+                              width: 20,
+                              height: 20,
+                            ),
+                            Text(
+                              currentPoints.toString(),
+                              style: TextStyle(
+                                color: Theme.of(context).primaryColor,
+                                  fontWeight: FontWeight.bold, fontSize: 30),
+                            )
+                          ]),
+                       Text('Eco-Coins', style: Theme.of(context).textTheme.headlineSmall,),
+                    ],
+                  ),
                 )
               ],
             ),

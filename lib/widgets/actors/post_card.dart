@@ -8,8 +8,9 @@ const lorem =
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
 
 class PostCard extends StatefulWidget {
-  const PostCard({super.key, required this.contentData});
+  const PostCard({super.key, required this.contentData, required this.refreshData});
   final Content contentData;
+  final VoidCallback refreshData;
 
   @override
   State<PostCard> createState() {
@@ -27,14 +28,14 @@ class _PostCard extends State<PostCard> {
       imageContent = Container(
         margin: EdgeInsets.symmetric(vertical: 10),
         width: double.infinity,
-        decoration: BoxDecoration(color: Color.fromARGB(255, 242, 244, 247)),
+        // decoration: BoxDecoration(color: Color.fromARGB(255, 242, 244, 247)),
         // child: Image.asset(
         //   'assets/images/how-to-recycle.png',
         //   height: 250,
         //   fit: BoxFit.cover,
         // ),
         child: Image.network(
-          'http://192.168.1.2:8080/media-content/${contentData.images[0]}',
+          'https://kalakalikasan-server.onrender.com/media-content/${contentData.images[0]}',
           height: 250,
           fit: BoxFit.cover,
         ),
@@ -45,7 +46,7 @@ class _PostCard extends State<PostCard> {
       imageContent = Container(
         margin: EdgeInsets.symmetric(vertical: 10),
         width: double.infinity,
-        decoration: BoxDecoration(color: Color.fromARGB(255, 242, 244, 247)),
+        // decoration: BoxDecoration(color: Color.fromARGB(255, 242, 244, 247)),
         // child: Image.asset(
         //   'assets/images/how-to-recycle.png',
         //   height: 250,
@@ -63,7 +64,7 @@ class _PostCard extends State<PostCard> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 5.0), // Add spacing between images
                       child: Image.network(
-                        'http://192.168.1.2:8080/media-content/${image}',
+                        'https://kalakalikasan-server.onrender.com/media-content/${contentData.images[0]}',
                         height: 250,
                         fit: BoxFit.cover,
                       ),
@@ -79,7 +80,7 @@ class _PostCard extends State<PostCard> {
       child: Container(
         padding: EdgeInsets.fromLTRB(5, 5, 5, 10),
         decoration: BoxDecoration(
-          color: Colors.white,
+          // color: Colors.white,
           borderRadius: BorderRadius.circular(10),
         ),
         child: Column(
@@ -123,7 +124,7 @@ class _PostCard extends State<PostCard> {
                   InkWell(
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (ctx) => ViewPostScreen(contentData: contentData,)));
+                          builder: (ctx) => ViewPostScreen(contentData: contentData, refreshData: widget.refreshData,)));
                     },
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -154,13 +155,14 @@ class _PostCard extends State<PostCard> {
                             foregroundColor:
                                 const Color.fromARGB(255, 253, 112, 102)),
                         onPressed: () {},
-                        label: const Text('100'),
+                        label:  Text(contentData.reacts.length.toString()),
                         icon: const Icon(Icons.favorite),
                       ),
+                      SizedBox(width: 4,),
                       ElevatedButton.icon(
                         onPressed: () {},
                         label: Text(
-                          '123',
+                          contentData.comments.length.toString(),
                           style: TextStyle(
                               color: Color.fromARGB(255, 9, 127, 218)),
                         ),

@@ -1,141 +1,158 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:icons_plus/icons_plus.dart';
+import 'package:kalakalikasan/provider/manual_collection_provider.dart';
+import 'package:kalakalikasan/provider/user_qr_provider.dart';
+import 'package:kalakalikasan/screens/collection_officer/collect_materials.dart';
 import 'package:kalakalikasan/screens/collection_officer/material_selections.dart';
 import 'package:kalakalikasan/screens/collection_officer/physical_cashout.dart';
+import 'package:kalakalikasan/screens/eco_actor/officer_claim_receipt.dart';
+import 'package:kalakalikasan/util/text_casing.dart';
+import 'package:kalakalikasan/widgets/error_single.dart';
 
-class QrResultScreen extends StatelessWidget {
+class QrResultScreen extends ConsumerStatefulWidget {
   const QrResultScreen({super.key});
+
+  @override
+  ConsumerState<QrResultScreen> createState() {
+    return _QrResultScreen();
+  }
+}
+
+class _QrResultScreen extends ConsumerState<QrResultScreen> {
+  String? _error;
+  void _onWithdraw() {
+    final userInfo = ref.read(userQrProvider);
+    final points = userInfo[UserQr.points];
+
+    if (points < 100) {
+      setState(() {
+        _error = 'Insufficient points.';
+      });
+      Future.delayed(Duration(seconds: 3), () {
+        setState(() {
+          _error = null;
+        });
+      });
+
+      return;
+    }
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (ctx) => QrResultScreen(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        foregroundColor: Colors.white,
-        title: Text('Result'),
-        flexibleSpace: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                // Color.fromARGB(255, 141, 253, 120),
-                // Color.fromARGB(255, 0, 131, 89)
-                Color.fromARGB(255, 72, 114, 50),
-                Color.fromARGB(255, 32, 77, 44)
-              ],
-              begin: Alignment.centerRight,
-              end: Alignment.centerLeft,
-            ),
-          ),
-        ),
-      ),
-      body: Container(
-        decoration:
-            const BoxDecoration(color: Color.fromARGB(255, 233, 233, 233)),
-        child: Center(
-          child: Card(
-            child: Container(
-              padding: const EdgeInsets.all(20),
-              width: (MediaQuery.of(context).size.width * 0.8),
-              height: 400,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text(
-                          'Juan Delacruz',
-                          style: TextStyle(
-                              fontSize: 32, fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          // crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Image.asset(
-                              'assets/images/token-img.png',
-                              width: 40,
-                              height: 40,
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            const Text(
-                              '232',
-                              style: TextStyle(
-                                  fontSize: 30, fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        const Text(
-                          'Eco Coins',
-                          style: TextStyle(fontSize: 20),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 40,
-                  ),
-                  Column(
+    final userInfo = ref.read(userQrProvider);
+    final fullName =
+        '${userInfo[UserQr.firstName]} ${userInfo[UserQr.lastName]}';
+    final points = userInfo[UserQr.points];
+    return Container(
+      margin: EdgeInsets.only(bottom: 100),
+      child: Center(
+        child: Card(
+          child: Container(
+            padding: const EdgeInsets.all(20),
+            width: (MediaQuery.of(context).size.width * 0.8),
+            height: 500,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                const Color.fromARGB(255, 32, 77, 44),
-                            foregroundColor: Colors.white,
-                            fixedSize:
-                                Size((MediaQuery.of(context).size.width), 50),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            )),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (ctx) => MaterialSelectionsScreen(),
-                            ),
-                          );
-                        },
-                        child: const Text(
-                          'Collect Materials',
-                          style: TextStyle(fontSize: 20),
+                      Text(
+                        toTitleCase(fullName),
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 32,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                       const SizedBox(
                         height: 20,
                       ),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                const Color.fromARGB(255, 32, 77, 44),
-                            foregroundColor: Colors.white,
-                            fixedSize:
-                                Size((MediaQuery.of(context).size.width), 50),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            )),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (ctx) => PhysicalCashoutScreen(),
-                            ),
-                          );
-                        },
-                        child: const Text(
-                          'Cash out',
-                          style: TextStyle(fontSize: 20),
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        // crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            'assets/images/token-img.png',
+                            width: 40,
+                            height: 40,
+                          ),
+                          const SizedBox(
+                            width: 4,
+                          ),
+                          Text(
+                            points.toString(),
+                            style: TextStyle(
+                                fontSize: 30, fontWeight: FontWeight.bold),
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                ],
-              ),
+                ),
+                const SizedBox(
+                  height: 40,
+                ),
+                Column(
+                  children: [
+                    if(_error != null)ErrorSingle(errorMessage: _error),
+                    ElevatedButton.icon(
+                      style: TextButton.styleFrom(
+                        foregroundColor:
+                            Theme.of(context).colorScheme.onPrimaryContainer,
+                        backgroundColor:
+                            Theme.of(context).colorScheme.primaryContainer,
+                      ),
+                      onPressed: _onWithdraw,
+                      label: Text('Withdraw'),
+                      icon: Icon(IonIcons.cash),
+                    ),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    ElevatedButton.icon(
+                      style: TextButton.styleFrom(
+                        foregroundColor:
+                            Theme.of(context).colorScheme.onPrimaryContainer,
+                        backgroundColor:
+                            Theme.of(context).colorScheme.primaryContainer,
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (ctx) => OfficerClaimReceiptScreen()));
+                      },
+                      label: Text('Claim receipt'),
+                      icon: Icon(Icons.receipt_long),
+                    ),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    ElevatedButton.icon(
+                      style: TextButton.styleFrom(
+                        foregroundColor:
+                            Theme.of(context).colorScheme.onPrimaryContainer,
+                        backgroundColor:
+                            Theme.of(context).colorScheme.primaryContainer,
+                      ),
+                      onPressed: () {
+                        ref.read(manualCollectProvider.notifier).reset();
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (ctx) => CollectMaterialsScreen()));
+                      },
+                      label: Text('Collect materials'),
+                      icon: Icon(Clarity.recycle_line),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
         ),

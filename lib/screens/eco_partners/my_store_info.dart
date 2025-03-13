@@ -1,13 +1,65 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:kalakalikasan/provider/url_provider.dart';
+import 'package:kalakalikasan/provider/user_store_provider.dart';
+import 'package:kalakalikasan/screens/eco_partners/edit_store_info.dart';
+import 'package:kalakalikasan/util/text_casing.dart';
+import 'package:kalakalikasan/widgets/partners/delete_store.dart';
+import 'package:kalakalikasan/widgets/partners/store_name_info.dart';
 
-class MyStoreInfo extends StatelessWidget {
+class MyStoreInfo extends ConsumerStatefulWidget {
   const MyStoreInfo({super.key});
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() {
+    return _MyStoreInfo();
+  }
+}
+
+class _MyStoreInfo extends ConsumerState<MyStoreInfo> {
+  // void _onTap() async {
+  //   try {
+  //     showModalBottomSheet(
+  //         // useSafeArea: true,
+  //         // isScrollControlled: true,
+  //         context: context,
+  //         builder: (ctx) => SelectedWastes());
+  //   } catch (e) {}
+  // }
 
   @override
   Widget build(BuildContext context) {
     var w = MediaQuery.of(context).size.width;
     var h = MediaQuery.of(context).size.height;
-    // TODO: implement build
+    final storeInfo = ref.watch(userStoreProvider);
+
+    if (storeInfo.isEmpty) {
+      return Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          foregroundColor: Colors.white,
+          flexibleSpace: Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  // Color.fromARGB(255, 141, 253, 120),
+                  // Color.fromARGB(255, 0, 131, 89)
+                  Color.fromARGB(255, 72, 114, 50),
+                  Color.fromARGB(255, 32, 77, 44)
+                ],
+                begin: Alignment.centerRight,
+                end: Alignment.centerLeft,
+              ),
+            ),
+          ),
+          title: const Text('Store Info'),
+        ),
+        body: Container(),
+      );
+    }
+    final storeAddress =
+        '${storeInfo[UserStore.street]}, Brgy. ${storeInfo[UserStore.barangay]}, ${storeInfo[UserStore.city]}, ${storeInfo[UserStore.zip]}, ${storeInfo[UserStore.province]}';
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -32,115 +84,47 @@ class MyStoreInfo extends StatelessWidget {
         width: w,
         height: h,
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        decoration: BoxDecoration(color: Color.fromARGB(255, 233, 233, 233)),
+        // decoration: BoxDecoration(color: Color.fromARGB(255, 233, 233, 233)),
         child: Column(
           children: [
-            Card(
-              clipBehavior: Clip.hardEdge,
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                width: double.infinity,
-                decoration: BoxDecoration(color: Colors.white),
-                child: Row(
-                  children: [
-                    Container(
-                      padding: EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(100),
-                        color: Color.fromARGB(70, 72, 114, 50),
-                      ),
-                      child: Icon(Icons.store_mall_directory_outlined),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Tindahan Ni Aling Nena",
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                        Text('Shop ID: 0000000001')
-                      ],
-                    )
-                  ],
-                ),
-              ),
-            ),
+            StoreNameInfo(),
             Card(
               clipBehavior: Clip.hardEdge,
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                 width: w,
-                decoration: BoxDecoration(color: Colors.white),
+                // decoration: BoxDecoration(color: Colors.white),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       'Address',
-                      style: TextStyle(fontSize: 14),
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Theme.of(context).primaryColor,
+                      ),
                     ),
                     Text(
-                      'BLK #1 LOT 1, San Bartolome, Quezon City',
-                      style: TextStyle(fontSize: 20),
+                      toTitleCase(storeAddress),
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Theme.of(context).primaryColor,
+                      ),
                     )
                   ],
                 ),
               ),
             ),
-            Card(
-              clipBehavior: Clip.hardEdge,
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                width: w,
-                decoration: BoxDecoration(color: Colors.white),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Contact Number',
-                      style: TextStyle(fontSize: 14),
-                    ),
-                    Text(
-                      '09123123123',
-                      style: TextStyle(fontSize: 20),
-                    )
-                  ],
-                ),
-              ),
-            ),
-            Card(
-              clipBehavior: Clip.hardEdge,
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                width: w,
-                decoration: BoxDecoration(color: Colors.white),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Email',
-                      style: TextStyle(fontSize: 14),
-                    ),
-                    Text(
-                      'nenastore@gmail.com',
-                      style: TextStyle(fontSize: 20),
-                    )
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 50,
-            ),
+            Spacer(),
             ElevatedButton(
                 style: ElevatedButton.styleFrom(
                     fixedSize: Size(w, 50),
-                    backgroundColor: Colors.green,
+                    backgroundColor: Theme.of(context).colorScheme.primary,
                     foregroundColor: Colors.white),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (ctx) => EditStoreInfo()));
+                },
                 child: Text('Edit')),
             SizedBox(
               height: 20,
@@ -148,7 +132,9 @@ class MyStoreInfo extends StatelessWidget {
             TextButton(
                 style: TextButton.styleFrom(
                     fixedSize: Size(w, 50), foregroundColor: Colors.red),
-                onPressed: () {},
+                onPressed: () {
+                  showDialog(context: context, builder: (ctx) => DeleteStore());
+                },
                 child: Text('Delete'))
           ],
         ),

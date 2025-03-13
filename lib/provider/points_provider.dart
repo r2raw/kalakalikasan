@@ -5,7 +5,6 @@ class PointsNotifier extends StateNotifier<int>{
   PointsNotifier() : super(0);
   int updatePoints(int currentPoints){
     return state = currentPoints;
-    
   }
 }
 

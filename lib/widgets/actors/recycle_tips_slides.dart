@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kalakalikasan/provider/screen_provider.dart';
+import 'package:kalakalikasan/widgets/actors/home_carousel.dart';
 
 class RecycleTipsSlides extends ConsumerWidget {
   const RecycleTipsSlides({super.key});
-  
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
@@ -26,7 +27,9 @@ class RecycleTipsSlides extends ConsumerWidget {
                 ),
                 TextButton(
                     style: TextButton.styleFrom(),
-                    onPressed: () {ref.read(screenProvider.notifier).swapScreen(3);},
+                    onPressed: () {
+                      ref.read(screenProvider.notifier).swapScreen(3);
+                    },
                     child: Text(
                       'See more >>',
                       style: TextStyle(
@@ -46,33 +49,34 @@ class RecycleTipsSlides extends ConsumerWidget {
               ],
             ),
           ),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Card(
-                  clipBehavior: Clip.hardEdge,
-                  child: Image.asset(
-                    'assets/images/how-to-recycle.png',
-                    width: 300,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                SizedBox(
-                  width: 20,
-                ),
-                Card(
-                  clipBehavior: Clip.hardEdge,
-                  child: Image.asset(
-                    'assets/images/how-to-recycle.png',
-                    width: 300,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ],
-            ),
-          )
+          HomeCarousel(),
+          // SingleChildScrollView(
+          //   scrollDirection: Axis.horizontal,
+          //   child: Row(
+          //     mainAxisAlignment: MainAxisAlignment.center,
+          //     children: [
+          //       Card(
+          //         clipBehavior: Clip.hardEdge,
+          //         child: Image.asset(
+          //           'assets/images/how-to-recycle.png',
+          //           width: 300,
+          //           fit: BoxFit.cover,
+          //         ),
+          //       ),
+          //       SizedBox(
+          //         width: 20,
+          //       ),
+          //       Card(
+          //         clipBehavior: Clip.hardEdge,
+          //         child: Image.asset(
+          //           'assets/images/how-to-recycle.png',
+          //           width: 300,
+          //           fit: BoxFit.cover,
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // )
         ],
       ),
     );

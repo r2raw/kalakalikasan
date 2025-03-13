@@ -1,24 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kalakalikasan/provider/landing_screen_provider.dart';
 import 'package:kalakalikasan/screens/login.dart';
 import 'package:kalakalikasan/widgets/reset/reset_otp.dart';
 import 'package:kalakalikasan/widgets/reset/reset_password.dart';
 import 'package:kalakalikasan/widgets/reset/set_new_pass.dart';
 
-class ForgotPasswordScreen extends StatefulWidget {
+class ForgotPasswordScreen extends ConsumerStatefulWidget {
   const ForgotPasswordScreen({super.key});
 
   @override
-  State<ForgotPasswordScreen> createState() {
+  ConsumerState<ForgotPasswordScreen> createState() {
     return _ForgotPasswordScreen();
   }
 }
 
-class _ForgotPasswordScreen extends State<ForgotPasswordScreen> {
+class _ForgotPasswordScreen extends ConsumerState<ForgotPasswordScreen> {
   String? otp;
 
   int resetPasswordStep = 1;
   void _backToLogin() {
-    Navigator.push(context, MaterialPageRoute(builder: (ctx) => Login()));
+    // Navigator.push(context, MaterialPageRoute(builder: (ctx) => Login()));
+    ref.read(landingScreenProvider.notifier).swapScreen(0);
   }
 
   void _goToStep(int step) {

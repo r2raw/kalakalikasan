@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:kalakalikasan/provider/receipt_provider.dart';
 import 'package:kalakalikasan/provider/url_provider.dart';
 import 'package:kalakalikasan/screens/eco_actor/barcode_result.dart';
+import 'package:kalakalikasan/widgets/loading_lg.dart';
 
 class TransactionReceipt extends ConsumerStatefulWidget {
   const TransactionReceipt({super.key});
@@ -17,15 +18,36 @@ class TransactionReceipt extends ConsumerStatefulWidget {
 
 class _TransactionReceipt extends ConsumerState<TransactionReceipt> {
   String? tansactionId;
+  bool _isSending = false;
+  String? _error;
   final _formKey = GlobalKey<FormState>();
   void _onSubmit() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      final url =
-          Uri.http(ref.read(urlProvider), '/get-receipt/$tansactionId');
+      setState(() {
+        _isSending = true;
+      });
+      
+      final url = Uri.https('kalakalikasan-server.onrender.com', '/get-receipt/$tansactionId');
       final response = await http.get(url);
 
+      if (response.statusCode >= 400) {
+        final decoded = json.decode(response.body);
+        final error = decoded['error'];
+        setState(() {
+          _isSending = false;
+          _error = error;
+        });
+        Future.delayed(Duration(seconds: 3), () {
+          setState(() {
+            _error = null;
+          });
+        });
+      }
       if (response.statusCode == 200) {
+        setState(() {
+          _isSending = false;
+        });
         final decoded = json.decode(response.body);
         final receipt = decoded['receipt'];
 
@@ -37,10 +59,6 @@ class _TransactionReceipt extends ConsumerState<TransactionReceipt> {
           ReceiptItem.status: receipt['claiming_status'],
           ReceiptItem.type: receipt['claiming_type'],
         };
-
-        print(
-          receipt['total_points'],
-        );
         ref.read(receiptProvider.notifier).saveReceipt(receiptData);
         Navigator.push(
           context,
@@ -142,29 +160,37 @@ class _TransactionReceipt extends ConsumerState<TransactionReceipt> {
                         style:
                             TextStyle(color: Color.fromARGB(255, 32, 77, 44)),
                       ),
-                      fillColor: Color.fromARGB(255, 32, 77, 44),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Color.fromARGB(255, 38, 167, 72),
-                        ),
-                      ),
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide:
-                            BorderSide(color: Color.fromARGB(255, 38, 167, 72)),
-                      ),
                     ),
                   ),
                   SizedBox(
                     height: 16,
                   ),
-                  ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 32, 77, 44),
-                          foregroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                      onPressed: _onSubmit,
-                      child: Text('Submit'))
+                  if (_error != null)
+                    Padding(
+                      padding: EdgeInsets.all(10),
+                      child: Text(
+                        _error!,
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.error,
+                        ),
+                      ),
+                    ),
+                  if (_isSending)
+                    const Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        SizedBox(width: 100, child: LoadingLg(20)),
+                      ],
+                    ),
+                  if (!_isSending)
+                    ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Color.fromARGB(255, 32, 77, 44),
+                            foregroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10))),
+                        onPressed: _onSubmit,
+                        child: Text('Submit'))
                 ],
               ),
             )

@@ -15,7 +15,6 @@ class SelectedWastes extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 40),
       height: 600,

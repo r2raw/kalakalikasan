@@ -27,7 +27,7 @@ class SalesReportScreen extends StatelessWidget {
             ),
           ),
         ),
-        title: const Text('Store Products'),
+        title: const Text('Reports'),
       ),
       body: Container(
         width: w,

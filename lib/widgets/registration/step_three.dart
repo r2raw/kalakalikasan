@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:icons_plus/icons_plus.dart';
+import 'package:kalakalikasan/provider/landing_screen_provider.dart';
 import 'package:kalakalikasan/provider/register_step_provider.dart';
 import 'package:kalakalikasan/provider/registration_form_provider.dart';
 import 'package:kalakalikasan/provider/url_provider.dart';
@@ -21,6 +24,8 @@ class StepThree extends ConsumerStatefulWidget {
 class _StepThree extends ConsumerState<StepThree> {
   final _formKey = GlobalKey<FormState>();
   final _passwordController = TextEditingController();
+  bool _seePass = false;
+  bool _seeConfPass = false;
   String username = '';
   String email = '';
   String mobileNum = '';
@@ -72,7 +77,8 @@ class _StepThree extends ConsumerState<StepThree> {
           errors = null;
           _isSending = true;
         });
-        final url = Uri.http(ref.read(urlProvider), 'register-actor');
+        final url =
+            Uri.https('kalakalikasan-server.onrender.com', 'register-actor');
         final response = await http.post(
           url,
           headers: {"Content-type": "application/json"},
@@ -88,8 +94,8 @@ class _StepThree extends ConsumerState<StepThree> {
         if (response.statusCode == 200) {
           ref.read(registrationFormProvider.notifier).resetForm();
           ref.read(registerStepProvider.notifier).goToStep(1);
-          Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (ctx) => Login()));
+
+          ref.read(landingScreenProvider.notifier).swapScreen(0);
         }
       } catch (err) {
         setState(() {
@@ -131,6 +137,12 @@ class _StepThree extends ConsumerState<StepThree> {
             child: Column(
               children: [
                 TextFormField(
+                  
+                  inputFormatters: [
+                    FilteringTextInputFormatter.deny(
+                        RegExp(r"\s")),
+                         // Blocks spaces
+                  ],
                   initialValue: username,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -278,7 +290,7 @@ class _StepThree extends ConsumerState<StepThree> {
                   height: 12,
                 ),
                 TextFormField(
-                  obscureText: true,
+                  obscureText: !_seePass,
                   controller: _passwordController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -289,7 +301,8 @@ class _StepThree extends ConsumerState<StepThree> {
                       return 'Password should have 8 characters minimum';
                     }
                     final passwordRegex = RegExp(
-                        r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$');
+                        r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$!%*?&.]{8,}$');
+
                     if (!passwordRegex.hasMatch(value)) {
                       return 'Password must include:\n1 uppercase letter, 1 number, and 1 symbol';
                     }
@@ -297,6 +310,21 @@ class _StepThree extends ConsumerState<StepThree> {
                   },
                   style: TextStyle(color: Color.fromARGB(244, 32, 77, 44)),
                   decoration: InputDecoration(
+                    suffix: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            _seePass = !_seePass;
+                          });
+                        },
+                        icon: !_seePass
+                            ? Icon(
+                                Clarity.eye_hide_line,
+                                color: Theme.of(context).primaryColor,
+                              )
+                            : Icon(
+                                Clarity.eye_show_line,
+                                color: Theme.of(context).primaryColor,
+                              )),
                     label: Text(
                       'Password',
                       style: TextStyle(color: Color.fromARGB(255, 32, 77, 44)),
@@ -322,7 +350,7 @@ class _StepThree extends ConsumerState<StepThree> {
                 TextFormField(
                   //Confirm password
                   initialValue: confirmPassword,
-                  obscureText: true,
+                  obscureText: !_seeConfPass,
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
                       return 'This field is required!';
@@ -340,6 +368,21 @@ class _StepThree extends ConsumerState<StepThree> {
                   },
                   style: TextStyle(color: Color.fromARGB(244, 32, 77, 44)),
                   decoration: InputDecoration(
+                    suffix: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            _seeConfPass = !_seeConfPass;
+                          });
+                        },
+                        icon: !_seeConfPass
+                            ? Icon(
+                                Clarity.eye_hide_line,
+                                color: Theme.of(context).primaryColor,
+                              )
+                            : Icon(
+                                Clarity.eye_show_line,
+                                color: Theme.of(context).primaryColor,
+                              )),
                     label: Text(
                       'Confirm Password',
                       style: TextStyle(color: Color.fromARGB(255, 32, 77, 44)),

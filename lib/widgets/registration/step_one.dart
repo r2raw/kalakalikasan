@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kalakalikasan/provider/landing_screen_provider.dart';
 import 'package:kalakalikasan/provider/register_step_provider.dart';
 import 'package:kalakalikasan/provider/registration_form_provider.dart';
 import 'package:kalakalikasan/screens/login.dart';
@@ -51,13 +52,13 @@ class _StepOne extends ConsumerState<StepOne> {
   }
 
   final DateTime past18Years = DateTime(
-      DateTime.now().year - 18, DateTime.now().month, DateTime.now().day);
+      DateTime.now().year - 13, DateTime.now().month, DateTime.now().day);
 
   Future<void> _selectDate() async {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: past18Years,
-      firstDate: DateTime(2000),
+      firstDate: DateTime(1900),
       lastDate: past18Years,
     );
     if (picked != null && picked != DateTime.now()) {
@@ -243,7 +244,7 @@ class _StepOne extends ConsumerState<StepOne> {
                 }
 
                 if (DateTime.parse(value).isAfter(past18Years)) {
-                  return 'Must be 18 years or older';
+                  return 'Must be 13 years old or older';
                 }
                 return null;
               },
@@ -360,8 +361,9 @@ class _StepOne extends ConsumerState<StepOne> {
         Center(
           child: TextButton(
             onPressed: () {
-              Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (ctx) => Login()));
+              // Navigator.of(context).pushReplacement(
+              //     MaterialPageRoute(builder: (ctx) => Login()));
+               ref.read(landingScreenProvider.notifier).swapScreen(0);
             },
             style: TextButton.styleFrom(
                 overlayColor: Color.fromARGB(255, 38, 167, 72)),
