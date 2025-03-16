@@ -114,7 +114,6 @@ class _ScanQr extends ConsumerState<ScanQr> {
           });
         }
         if (response.statusCode == 200) {
-          ScaffoldMessenger.of(context).clearSnackBars();
           final decoded = json.decode(response.body);
 
           final Map<UserQr, dynamic> qrInfo = {

@@ -5,10 +5,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:icons_plus/icons_plus.dart';
 import 'package:kalakalikasan/provider/receipt_provider.dart';
+import 'package:kalakalikasan/screens/collection_officer/receipt_qr_result.dart';
 import 'package:kalakalikasan/screens/collection_officer/transaction_id_qr.dart';
+import 'package:kalakalikasan/widgets/error_single.dart';
+import 'package:kalakalikasan/widgets/loading_lg.dart';
 
 class EnterTransactionScreen extends ConsumerStatefulWidget {
-  const EnterTransactionScreen({super.key});
+  const EnterTransactionScreen({super.key, required this.origin});
+  final String origin;
   @override
   ConsumerState<EnterTransactionScreen> createState() {
     return _EnterTransactionScreen();
@@ -23,10 +27,17 @@ class _EnterTransactionScreen extends ConsumerState<EnterTransactionScreen> {
   void _onSubmit() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-
       try {
-        final url = Uri.https('kalakalikasan-server.onrender.com',
-            '/get-receipt/$_transactionId');
+        setState(() {
+          _isSending = true;
+        });
+        String transId = _transactionId;
+
+        if (_transactionId.length == 13) {
+          transId = _transactionId.substring(0, 12);
+        }
+        final url = Uri.https(
+            'kalakalikasan-server.onrender.com', '/get-receipt/$transId');
         final response = await http.get(url);
 
         if (response.statusCode >= 400) {
@@ -59,12 +70,17 @@ class _EnterTransactionScreen extends ConsumerState<EnterTransactionScreen> {
           };
           ref.read(receiptProvider.notifier).saveReceipt(receiptData);
 
+          if (widget.origin == 'dashboard') {
+            Navigator.of(context).pop(true);
+          }
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (ctx) => TransactionIdQrScreen(),
+              builder: (ctx) => ReceiptQrResultScreen(),
             ),
           );
+
+          return;
         }
       } catch (e) {
         ScaffoldMessenger.of(context).clearSnackBars();
@@ -80,9 +96,21 @@ class _EnterTransactionScreen extends ConsumerState<EnterTransactionScreen> {
     var h = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
-        foregroundColor: Theme.of(context).primaryColor,
+        foregroundColor: Colors.white,
         title: Text('Enter transaction'),
         centerTitle: true,
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color.fromARGB(255, 72, 114, 50),
+                Color.fromARGB(255, 32, 77, 44)
+              ],
+              begin: Alignment.centerRight,
+              end: Alignment.centerLeft,
+            ),
+          ),
+        ),
       ),
       body: Container(
         height: h,
@@ -142,14 +170,25 @@ class _EnterTransactionScreen extends ConsumerState<EnterTransactionScreen> {
               SizedBox(
                 height: 16,
               ),
-              ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Color.fromARGB(255, 32, 77, 44),
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10))),
-                  onPressed: _onSubmit,
-                  child: Text('Submit')),
+              if (_error != null)
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 4),
+                  child: ErrorSingle(errorMessage: _error),
+                ),
+              if (_isSending)
+                SizedBox(
+                  width: 80,
+                  child: LoadingLg(20),
+                ),
+              if (!_isSending)
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Color.fromARGB(255, 32, 77, 44),
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10))),
+                    onPressed: _onSubmit,
+                    child: Text('Submit')),
             ],
           ),
         ),

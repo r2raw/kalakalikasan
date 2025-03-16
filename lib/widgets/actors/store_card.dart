@@ -53,30 +53,30 @@ class StoreCard extends ConsumerWidget {
                   color: Color.fromARGB(255, 32, 77, 44)
                 ),
               ),
-              SizedBox(height: 8,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('4.0'),
-                  Icon(
-                    Icons.star,
-                    color: Colors.yellow,
-                  ),
-                  Icon(
-                    Icons.star,
-                    color: Colors.yellow,
-                  ),
-                  Icon(
-                    Icons.star,
-                    color: Colors.yellow,
-                  ),
-                  Icon(
-                    Icons.star,
-                    color: Colors.yellow,
-                  ),
-                  Icon(Icons.star_border)
-                ],
-              )
+              // SizedBox(height: 8,),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: [
+              //     Text('4.0'),
+              //     Icon(
+              //       Icons.star,
+              //       color: Colors.yellow,
+              //     ),
+              //     Icon(
+              //       Icons.star,
+              //       color: Colors.yellow,
+              //     ),
+              //     Icon(
+              //       Icons.star,
+              //       color: Colors.yellow,
+              //     ),
+              //     Icon(
+              //       Icons.star,
+              //       color: Colors.yellow,
+              //     ),
+              //     Icon(Icons.star_border)
+              //   ],
+              // )
             ],
           ),
         ),

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:kalakalikasan/widgets/partners/accumulated_points.dart';
+import 'package:kalakalikasan/widgets/partners/sales_trend.dart';
+import 'package:kalakalikasan/widgets/partners/top_purchases_chart.dart';
 
 class SalesReportScreen extends StatelessWidget {
   const SalesReportScreen({super.key});
@@ -32,8 +35,15 @@ class SalesReportScreen extends StatelessWidget {
       body: Container(
         width: w,
         height: h,
-        decoration: BoxDecoration(
-          color: Color.fromARGB(255, 233, 233, 233)
+        padding: EdgeInsets.all(16),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              AccumulatedPoints(),
+              TopPurchasesChart(),
+              SalesTrend(),
+            ],
+          ),
         ),
       ),
     );

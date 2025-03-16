@@ -6,6 +6,8 @@ import 'package:kalakalikasan/provider/user_qr_provider.dart';
 import 'package:kalakalikasan/screens/collection_officer/collect_materials.dart';
 import 'package:kalakalikasan/screens/collection_officer/material_selections.dart';
 import 'package:kalakalikasan/screens/collection_officer/physical_cashout.dart';
+import 'package:kalakalikasan/screens/collection_officer/qr_first_receipt.dart';
+import 'package:kalakalikasan/screens/collection_officer/withdraw_request.dart';
 import 'package:kalakalikasan/screens/eco_actor/officer_claim_receipt.dart';
 import 'package:kalakalikasan/util/text_casing.dart';
 import 'package:kalakalikasan/widgets/error_single.dart';
@@ -39,7 +41,7 @@ class _QrResultScreen extends ConsumerState<QrResultScreen> {
     }
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (ctx) => QrResultScreen(),
+        builder: (ctx) => WithdrawRequest(),
       ),
     );
   }
@@ -51,7 +53,7 @@ class _QrResultScreen extends ConsumerState<QrResultScreen> {
         '${userInfo[UserQr.firstName]} ${userInfo[UserQr.lastName]}';
     final points = userInfo[UserQr.points];
     return Container(
-      margin: EdgeInsets.only(bottom: 100),
+      margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
       child: Center(
         child: Card(
           child: Container(
@@ -112,7 +114,7 @@ class _QrResultScreen extends ConsumerState<QrResultScreen> {
                             Theme.of(context).colorScheme.primaryContainer,
                       ),
                       onPressed: _onWithdraw,
-                      label: Text('Withdraw'),
+                      label: Text('Cashout'),
                       icon: Icon(IonIcons.cash),
                     ),
                     const SizedBox(
@@ -127,7 +129,7 @@ class _QrResultScreen extends ConsumerState<QrResultScreen> {
                       ),
                       onPressed: () {
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: (ctx) => OfficerClaimReceiptScreen()));
+                            builder: (ctx) => QrFirstReceipt()));
                       },
                       label: Text('Claim receipt'),
                       icon: Icon(Icons.receipt_long),

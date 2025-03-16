@@ -11,6 +11,7 @@ import 'package:kalakalikasan/screens/collection_officer/scan_user_qr.dart';
 import 'package:kalakalikasan/screens/eco_partners/enter_username.dart';
 import 'package:kalakalikasan/widgets/actors/schedule_list.dart';
 import 'package:kalakalikasan/widgets/actors/weekly_schedule.dart';
+import 'package:kalakalikasan/widgets/error_single.dart';
 import 'package:kalakalikasan/widgets/my_scanner.dart';
 import 'package:http/http.dart' as http;
 
@@ -26,25 +27,26 @@ class OfficerClaimReceiptScreen extends ConsumerStatefulWidget {
 class _OfficerClaimReceiptScreen
     extends ConsumerState<OfficerClaimReceiptScreen> {
   String? currentScreen;
-
+  String? _error;
   void _onPressTransactionId() async {
     final result = await Navigator.of(context).push<bool>(
       MaterialPageRoute(
-        builder: (ctx) => EnterTransactionScreen(),
+        builder: (ctx) => EnterTransactionScreen(
+          origin: 'dashboard',
+        ),
       ),
     );
 
-    if(result == null){
+    if (result == null) {
       return;
     }
 
-    if(result == true){
+    if (result == true) {
       setState(() {
         currentScreen = 'qr';
       });
     }
   }
-
 
   void goToResult() async {
     final scannedId = ref.read(scanProvider);
@@ -57,16 +59,16 @@ class _OfficerClaimReceiptScreen
 
         final receipt = decoded['receipt'];
         if (response.statusCode >= 400) {
-          if (!context.mounted) {
-            return;
-          }
-          ScaffoldMessenger.of(context).clearSnackBars();
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              backgroundColor: Theme.of(context).colorScheme.errorContainer,
-              content: Text(
-                decoded['error'],
-                style: TextStyle(color: Theme.of(context).colorScheme.error),
-              )));
+          setState(() {
+            _error = decoded['error'];
+          });
+
+          Future.delayed(Duration(seconds: 3), () {
+            setState(() {
+              _error = null;
+            });
+          });
+          return;
         }
 
         if (response.statusCode == 200) {
@@ -81,9 +83,15 @@ class _OfficerClaimReceiptScreen
           };
 
           if (receipt['claiming_status'] == 'completed') {
-            ScaffoldMessenger.of(context).clearSnackBars();
-            ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Receipt has been claimed already!')));
+            setState(() {
+              _error = 'Receipt has been claimed already!';
+            });
+
+            Future.delayed(Duration(seconds: 3), () {
+              setState(() {
+                _error = null;
+              });
+            });
             return;
           }
           ref.read(receiptProvider.notifier).saveReceipt(receiptData);
@@ -168,6 +176,10 @@ class _OfficerClaimReceiptScreen
               label: Text('Enter transaction ID'),
               icon: Icon(Icons.keyboard),
             ),
+            SizedBox(
+              height: 12,
+            ),
+            if (_error != null) ErrorSingle(errorMessage: _error)
           ],
         ),
       ),

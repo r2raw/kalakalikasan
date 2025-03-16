@@ -1,18 +1,14 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:icons_plus/icons_plus.dart';
 import 'package:kalakalikasan/provider/scan_provider.dart';
-import 'package:kalakalikasan/provider/url_provider.dart';
 import 'package:kalakalikasan/provider/user_qr_provider.dart';
-import 'package:kalakalikasan/screens/collection_officer/direct_cash.dart';
 import 'package:kalakalikasan/screens/collection_officer/receipt_qr_result.dart';
 import 'package:kalakalikasan/screens/eco_partners/enter_username.dart';
+import 'package:kalakalikasan/widgets/error_single.dart';
 import 'package:kalakalikasan/widgets/my_scanner.dart';
 import 'package:http/http.dart' as http;
-import 'package:kalakalikasan/widgets/second_scanner.dart';
 
 class HomeBarcodeScanScreen extends ConsumerStatefulWidget {
   const HomeBarcodeScanScreen({super.key});
@@ -24,25 +20,36 @@ class HomeBarcodeScanScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeBarcodeScanScreen extends ConsumerState<HomeBarcodeScanScreen> {
+  String? _error;
   void goToResult() async {
     final scannedId = ref.read(scanProvider);
     try {
-      final url = Uri.https('kalakalikasan-server.onrender.com', 'qr-scan-user/${scannedId}');
+      final url = Uri.https(
+          'kalakalikasan-server.onrender.com', 'qr-scan-user/${scannedId}');
 
       final response = await http.get(url);
 
       if (response.statusCode >= 400) {
         final decoded = json.decode(response.body);
-        ScaffoldMessenger.of(context).clearSnackBars();
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: Theme.of(context).colorScheme.errorContainer,
-            content: Text(
-              decoded['error'],
-              style: TextStyle(color: Theme.of(context).colorScheme.error),
-            ),
-          ),
-        );
+
+        setState(() {
+          _error = decoded['error'];
+        });
+        Future.delayed(Duration(seconds: 3), (){
+          setState(() {
+            _error = null;
+          });
+        });
+        // ScaffoldMessenger.of(context).clearSnackBars();
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //   SnackBar(
+        //     backgroundColor: Theme.of(context).colorScheme.errorContainer,
+        //     content: Text(
+        //       decoded['error'],
+        //       style: TextStyle(color: Theme.of(context).colorScheme.error),
+        //     ),
+        //   ),
+        // );
       }
       if (response.statusCode == 200) {
         final decoded = json.decode(response.body);
@@ -62,6 +69,8 @@ class _HomeBarcodeScanScreen extends ConsumerState<HomeBarcodeScanScreen> {
             builder: (ctx) => ReceiptQrResultScreen(),
           ),
         );
+
+        return;
       }
     } catch (e, stackTrace) {
       print('error $e');
@@ -143,6 +152,8 @@ class _HomeBarcodeScanScreen extends ConsumerState<HomeBarcodeScanScreen> {
               label: Text('Enter username'),
               icon: Icon(Icons.keyboard),
             ),
+            SizedBox(height: 12,),
+            if(_error != null) ErrorSingle(errorMessage: _error)
           ],
         ),
       ),

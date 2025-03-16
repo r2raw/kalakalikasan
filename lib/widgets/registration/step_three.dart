@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:kalakalikasan/provider/landing_screen_provider.dart';
+import 'package:kalakalikasan/provider/otp_provider.dart';
 import 'package:kalakalikasan/provider/register_step_provider.dart';
 import 'package:kalakalikasan/provider/registration_form_provider.dart';
 import 'package:kalakalikasan/provider/url_provider.dart';
@@ -10,8 +11,11 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import 'package:kalakalikasan/screens/login.dart';
+import 'package:kalakalikasan/util/otp.dart';
 import 'package:kalakalikasan/widgets/error_arr.dart';
 import 'package:kalakalikasan/widgets/loading_lg.dart';
+import 'package:kalakalikasan/widgets/registration/registration_otp.dart';
+import 'package:kalakalikasan/widgets/registration/success_reg.dart';
 
 class StepThree extends ConsumerStatefulWidget {
   const StepThree({super.key});
@@ -45,25 +49,82 @@ class _StepThree extends ConsumerState<StepThree> {
     });
   }
 
+  void _onSendOtp() async {
+    try {
+      if (_formKey.currentState!.validate()) {
+        _formKey.currentState!.save();
+
+        setState(() {
+          errors = null;
+          _isSending = true;
+        });
+
+        ref
+            .read(registrationFormProvider.notifier)
+            .updateRegForm(RegInput.username, username);
+        ref
+            .read(registrationFormProvider.notifier)
+            .updateRegForm(RegInput.email, email);
+        ref
+            .read(registrationFormProvider.notifier)
+            .updateRegForm(RegInput.mobileNum, mobileNum);
+        ref
+            .read(registrationFormProvider.notifier)
+            .updateRegForm(RegInput.password, _passwordController.text);
+        ref
+            .read(registrationFormProvider.notifier)
+            .updateRegForm(RegInput.confirmPassword, confirmPassword);
+
+        final otp = generateRandomCode();
+        ref.read(otpProvider.notifier).setOtp(otp);
+        final url = Uri.https('kalakalikasan-server.onrender.com', 'send-sms');
+        final response = await http.post(url,
+            headers: {'Content-type': 'application/json'},
+            body: json.encode({
+              'send_to': mobileNum,
+              'msg':
+                  "[KalaKalikasan] - Your otp for account verification is '$otp'. If you did not request this, please ignore this message."
+            }));
+
+        if (response.statusCode >= 400) {
+          final decoded = json.decode(response.body);
+          setState(() {
+            errors = [decoded['error']];
+            _isSending = false;
+          });
+          Future.delayed(Duration(seconds: 3), () {
+            setState(() {
+              errors = null;
+            });
+          });
+        }
+
+        if (response.statusCode == 200) {
+          setState(() {
+            _isSending = false;
+          });
+          final result = await Navigator.of(context).push<bool>(
+              MaterialPageRoute(builder: (ctx) => RegistrationOtp()));
+          if (result == null) {
+            return;
+          }
+
+          if (result) {
+            _onSaveForm();
+          }
+        }
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Ooops, Something went wrong!')));
+    }
+  }
+
   void _onSaveForm() async {
     if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
+      // _formKey.currentState!.save();
 
-      ref
-          .read(registrationFormProvider.notifier)
-          .updateRegForm(RegInput.username, username);
-      ref
-          .read(registrationFormProvider.notifier)
-          .updateRegForm(RegInput.email, email);
-      ref
-          .read(registrationFormProvider.notifier)
-          .updateRegForm(RegInput.mobileNum, mobileNum);
-      ref
-          .read(registrationFormProvider.notifier)
-          .updateRegForm(RegInput.password, _passwordController.text);
-      ref
-          .read(registrationFormProvider.notifier)
-          .updateRegForm(RegInput.confirmPassword, confirmPassword);
       final regForm = ref.read(registrationFormProvider);
 
       final Map<String, String> regFormData = regForm.map(
@@ -78,7 +139,7 @@ class _StepThree extends ConsumerState<StepThree> {
           _isSending = true;
         });
         final url =
-            Uri.https('kalakalikasan-server.onrender.com', 'register-actor');
+            Uri.http(ref.read(urlProvider), 'register-actor');
         final response = await http.post(
           url,
           headers: {"Content-type": "application/json"},
@@ -96,6 +157,9 @@ class _StepThree extends ConsumerState<StepThree> {
           ref.read(registerStepProvider.notifier).goToStep(1);
 
           ref.read(landingScreenProvider.notifier).swapScreen(0);
+
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (ctx) => SuccessReg()));
         }
       } catch (err) {
         setState(() {
@@ -137,11 +201,9 @@ class _StepThree extends ConsumerState<StepThree> {
             child: Column(
               children: [
                 TextFormField(
-                  
                   inputFormatters: [
-                    FilteringTextInputFormatter.deny(
-                        RegExp(r"\s")),
-                         // Blocks spaces
+                    FilteringTextInputFormatter.deny(RegExp(r"\s")),
+                    // Blocks spaces
                   ],
                   initialValue: username,
                   validator: (value) {
@@ -434,7 +496,7 @@ class _StepThree extends ConsumerState<StepThree> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10)),
                 ),
-                onPressed: _onSaveForm,
+                onPressed: _onSendOtp,
                 child: Text(
                   'Submit',
                   style: TextStyle(color: Colors.white),

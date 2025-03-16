@@ -10,8 +10,7 @@ class HomeOfficer extends StatelessWidget {
   const HomeOfficer({super.key});
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    const LatLng _pGooglePlex = LatLng(14.648282, 121.049850);
+    // const LatLng _pGooglePlex = LatLng(14.648282, 121.049850);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20 ),
       child: Column(

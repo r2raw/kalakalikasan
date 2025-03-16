@@ -14,6 +14,7 @@ import 'package:kalakalikasan/screens/notification.dart';
 import 'package:kalakalikasan/screens/user_drawer.dart';
 import 'package:kalakalikasan/widgets/officer_floating_nav.dart';
 import 'package:http/http.dart' as http;
+import 'package:kalakalikasan/util/text_casing.dart';
 
 class CollectionOfficerScreen extends ConsumerStatefulWidget {
   const CollectionOfficerScreen({super.key});
@@ -113,6 +114,8 @@ class _CollectionOfficerState extends ConsumerState<CollectionOfficerScreen>
   @override
   Widget build(BuildContext context) {
     ref.watch(notifProvider);
+    final userInfo = ref.watch(currentUserProvider);
+    final fullName = '${userInfo[CurrentUser.firstName]} ${userInfo[CurrentUser.lastName]}';
     final unreadNotifs = notifs[Notif.unread];
     int _selectedTabIndex = ref.watch(screenProvider);
     double h = MediaQuery.of(context).size.height;
@@ -129,7 +132,7 @@ class _CollectionOfficerState extends ConsumerState<CollectionOfficerScreen>
           ),
         );
       },
-      child: const Row(
+      child:  Row(
         children: [
           Icon(
             Icons.person,
@@ -145,7 +148,7 @@ class _CollectionOfficerState extends ConsumerState<CollectionOfficerScreen>
                 'Welcome,',
                 style: TextStyle(fontSize: 16),
               ),
-              Text('Juan Dela Cruz',
+              Text(toTitleCase(fullName),
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))
             ],
           )

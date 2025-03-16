@@ -8,6 +8,7 @@ import 'package:kalakalikasan/provider/screen_provider.dart';
 import 'package:kalakalikasan/provider/url_provider.dart';
 import 'package:kalakalikasan/provider/user_store_provider.dart';
 import 'package:kalakalikasan/screens/collection_officer.dart';
+import 'package:kalakalikasan/screens/collection_officer/first_time_log.dart';
 import 'package:kalakalikasan/screens/eco_actors.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
@@ -126,6 +127,14 @@ class _LoginState extends ConsumerState<Login> {
                 MaterialPageRoute(builder: (ctx) => EcoActors()));
           } else if (userRole == 'officer') {
             ref.read(screenProvider.notifier).swapScreen(0);
+            if (userData['first_time_log']) {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (ctx) => FirstTimeLog(),
+                ),
+              );
+              return;
+            }
             Navigator.of(context).pushReplacement(
                 MaterialPageRoute(builder: (ctx) => CollectionOfficerScreen()));
           }
@@ -139,7 +148,7 @@ class _LoginState extends ConsumerState<Login> {
   void _goToRegister() {
     // Navigator.of(context)
     //     .pushReplacement(MaterialPageRoute(builder: (ctx) => RegisterScreen()));
-     ref.read(landingScreenProvider.notifier).swapScreen(2);
+    ref.read(landingScreenProvider.notifier).swapScreen(2);
   }
 
   void _goToPasswordReset() {
@@ -209,7 +218,6 @@ class _LoginState extends ConsumerState<Login> {
                     _enteredUserCred = value!;
                   },
                   decoration: InputDecoration(
-                    
                     label: Text(
                       'Email or mobile number',
                       style: TextStyle(color: Color.fromARGB(255, 32, 77, 44)),
@@ -292,11 +300,11 @@ class _LoginState extends ConsumerState<Login> {
       ),
     );
 
-    if(landingScreen == 1){
+    if (landingScreen == 1) {
       content = ForgotPasswordScreen();
     }
 
-    if(landingScreen == 2){
+    if (landingScreen == 2) {
       content = RegisterScreen();
     }
     return content;

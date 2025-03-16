@@ -1,87 +1,71 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kalakalikasan/provider/current_user_provider.dart';
-import 'package:kalakalikasan/provider/screen_provider.dart';
-import 'package:kalakalikasan/provider/url_provider.dart';
 import 'package:kalakalikasan/provider/user_store_provider.dart';
-import 'package:kalakalikasan/screens/eco_actors.dart';
 import 'package:kalakalikasan/widgets/loading_lg.dart';
-import 'package:http/http.dart' as http;
 import 'package:kalakalikasan/widgets/loading_red.dart';
+import 'package:http/http.dart' as http;
 
-class DeleteStore extends ConsumerStatefulWidget {
-  const DeleteStore({super.key});
+class CancelRequest extends ConsumerStatefulWidget {
+  const CancelRequest({super.key, required this.onRefresh});
 
+  final VoidCallback onRefresh;
   @override
   ConsumerState<ConsumerStatefulWidget> createState() {
-    return _DeleteStore();
+    // TODO: implement createState
+    return _CancelRequest();
   }
 }
 
-class _DeleteStore extends ConsumerState<DeleteStore> {
+class _CancelRequest extends ConsumerState<CancelRequest> {
   bool _isDeleting = false;
+
   void _onDelete() async {
     try {
       setState(() {
         _isDeleting = true;
       });
-      final url = Uri.https('kalakalikasan-server.onrender.com', 'delete-store');
-
       final storeId = ref.read(userStoreProvider)[UserStore.id];
       final userId = ref.read(currentUserProvider)[CurrentUser.id];
-      final response = await http.patch(
-        url,
-        headers: {'Content-type': 'application/json'},
-        body: json.encode(
-          {'storeId': storeId, 'userId': userId},
-        ),
-      );
+      final url =
+          Uri.https('kalakalikasan-server.onrender.com', 'delete-store');
+      final response = await http.patch(url,
+          headers: {'Content-type': 'application/json'},
+          body: json.encode({'userId': userId, 'storeId': storeId}));
 
-      if (response.statusCode >= 400) {
-        setState(() {
-          _isDeleting = false;
-        });
-      }
       if (response.statusCode == 200) {
-        final Map<CurrentUser, dynamic> updatedRole = {
-          CurrentUser.role: 'actor',
-        };
-
-        ref.read(currentUserProvider.notifier).updateUser(updatedRole);
-        ref.read(screenProvider.notifier).swapScreen(0);
         setState(() {
           _isDeleting = false;
         });
+        widget.onRefresh();
         if (!context.mounted) {
           return;
         }
-        Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (ctx) => EcoActors()),
-          (route) => false,
-        );
-        ref.read(userStoreProvider.notifier).reset();
+        Navigator.of(context).pop();
       }
     } catch (e) {
       setState(() {
         _isDeleting = false;
       });
-
-      if (context.mounted) {
-        Navigator.of(context).pop();
-      }
       ScaffoldMessenger.of(context).clearSnackBars();
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Oops! Something went wrong!')));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          backgroundColor: Theme.of(context).colorScheme.errorContainer,
+          content: Text(
+            'Oops! Something went wrong!',
+            style: TextStyle(color: Theme.of(context).colorScheme.error),
+          )));
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    // TODO: implement build
     return AlertDialog(
       title: Text(
-        'Delete store',
+        'Cancel request',
         style: TextStyle(
           color: Theme.of(context).colorScheme.error,
           fontSize: 16,
@@ -94,7 +78,7 @@ class _DeleteStore extends ConsumerState<DeleteStore> {
           Text(
             maxLines: 3,
             overflow: TextOverflow.ellipsis,
-            "Are you sure you want to delete your store?",
+            "Are you sure you want to cancel your registration?",
             style: TextStyle(
               color: Theme.of(context).colorScheme.error,
             ),
@@ -124,7 +108,7 @@ class _DeleteStore extends ConsumerState<DeleteStore> {
               foregroundColor: Colors.white,
             ),
             onPressed: _onDelete,
-            child: Text('Delete'),
+            child: Text('Confirm'),
           )
       ],
     );

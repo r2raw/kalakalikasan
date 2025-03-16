@@ -13,7 +13,7 @@ class DashboardNav extends ConsumerWidget {
   const DashboardNav({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final role = ref.read(currentUserProvider)[CurrentUser.role];
+    final role = ref.watch(currentUserProvider)[CurrentUser.role];
     return GridView(
       padding: EdgeInsets.symmetric(vertical: 10),
       shrinkWrap: true,

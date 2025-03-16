@@ -45,7 +45,7 @@ class _TransactionListState extends ConsumerState<TransactionList> {
       final userRole = userInfo[CurrentUser.role];
       final userId = userInfo[CurrentUser.id];
       if (userRole != 'officer') {
-        final url = Uri.https('kalakalikasan-server.onrender.com' 'transactions/$userId');
+        final url = Uri.https('kalakalikasan-server.onrender.com', 'transactions/$userId');
 
         final response = await http.get(url);
         final decoded = json.decode(response.body);
@@ -58,15 +58,15 @@ class _TransactionListState extends ConsumerState<TransactionList> {
 
         if (response.statusCode == 200) {
           setState(() {
-            transactionList = decoded;
             _isLoading = false;
+            transactionList = decoded;
           });
         }
       }
 
       if(userRole =='officer'){
         
-        final url = Uri.https('kalakalikasan-server.onrender.com' 'officer-transaction/$userId');
+        final url = Uri.https('kalakalikasan-server.onrender.com', 'officer-transaction/$userId');
 
         final response = await http.get(url);
         final decoded = json.decode(response.body);

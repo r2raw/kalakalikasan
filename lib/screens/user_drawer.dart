@@ -4,7 +4,10 @@ import 'package:kalakalikasan/provider/cart_provider.dart';
 import 'package:kalakalikasan/provider/current_user_provider.dart';
 import 'package:kalakalikasan/provider/screen_provider.dart';
 import 'package:kalakalikasan/provider/user_store_provider.dart';
+import 'package:kalakalikasan/screens/about_us.dart';
+import 'package:kalakalikasan/screens/change_password.dart';
 import 'package:kalakalikasan/screens/login.dart';
+import 'package:kalakalikasan/screens/terms_and_condition.dart';
 import 'package:kalakalikasan/util/text_truncate.dart';
 import 'package:kalakalikasan/widgets/actors/menu_drawer_item.dart';
 
@@ -13,10 +16,12 @@ class UserDrawer extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final firstName = ref.watch(currentUserProvider)[CurrentUser.firstName].toString().toUpperCase();
-    final lastName = ref.watch(currentUserProvider)[CurrentUser.lastName].toString().toUpperCase();
-    final email = ref.watch(currentUserProvider)[CurrentUser.email].toString();
+    final userInfo = ref.watch(currentUserProvider);
+    final firstName = userInfo[CurrentUser.firstName].toString().toUpperCase();
+    final lastName = userInfo[CurrentUser.lastName].toString().toUpperCase();
+    final email = userInfo[CurrentUser.email].toString();
     final fullName = textTruncate('$firstName $lastName', 17);
+    final role = userInfo[CurrentUser.role];
     double h = MediaQuery.of(context).size.height;
     double w = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -61,7 +66,7 @@ class UserDrawer extends ConsumerWidget {
                       Icon(
                         Icons.person,
                         size: 50,
-                        color:  Colors.white,
+                        color: Colors.white,
                       ),
                       SizedBox(
                         width: 10,
@@ -73,13 +78,13 @@ class UserDrawer extends ConsumerWidget {
                             fullName,
                             style: TextStyle(
                               fontSize: 24,
-                              color:  Colors.white,
+                              color: Colors.white,
                             ),
                           ),
                           Text(email,
                               style: TextStyle(
                                 fontSize: 16,
-                                color:  Colors.white,
+                                color: Colors.white,
                               ))
                         ],
                       ),
@@ -119,18 +124,23 @@ class UserDrawer extends ConsumerWidget {
                             SizedBox(
                               height: 20,
                             ),
-                            MenuDrawerItem(
-                              icon: Icons.store,
-                              title: 'My shop',
-                              onSelect: () {
-                                print('My Shop');
-                              },
-                            ),
+                            if (role == 'partner')
+                              MenuDrawerItem(
+                                icon: Icons.store,
+                                title: 'My Shop',
+                                onSelect: () {
+                                  ref
+                                      .read(screenProvider.notifier)
+                                      .swapScreen(2);
+                                  Navigator.of(context).pop();
+                                },
+                              ),
                             MenuDrawerItem(
                               icon: Icons.password,
                               title: 'Change Password',
                               onSelect: () {
-                                print('Change Password');
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (ctx) => ChangePassword()));
                               },
                             ),
                             MenuDrawerItem(
@@ -138,21 +148,25 @@ class UserDrawer extends ConsumerWidget {
                               title: 'News, Announcements, & Guides',
                               onSelect: () {
                                 Navigator.of(context).pop();
-                                ref.read(screenProvider.notifier).swapScreen(3);
+                                ref
+                                    .read(screenProvider.notifier)
+                                    .swapScreen(role == 'officer' ? 2 : 3);
                               },
                             ),
                             MenuDrawerItem(
                               icon: Icons.paste_sharp,
                               title: 'Terms & Condition',
                               onSelect: () {
-                                print('Terms & Condition');
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (ctx) => TermsAndCondition()));
                               },
                             ),
                             MenuDrawerItem(
                               icon: Icons.info,
-                              title: 'About us',
+                              title: 'About Us',
                               onSelect: () {
-                                print('About us');
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (ctx) => AboutUs()));
                               },
                             ),
                           ],

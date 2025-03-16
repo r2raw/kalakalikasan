@@ -1,62 +1,58 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:icons_plus/icons_plus.dart';
-import 'package:kalakalikasan/provider/landing_screen_provider.dart';
-import 'package:kalakalikasan/provider/reset_otp_provider.dart';
+import 'package:kalakalikasan/provider/current_user_provider.dart';
 import 'package:kalakalikasan/widgets/error_single.dart';
 import 'package:kalakalikasan/widgets/loading_lg.dart';
 import 'package:http/http.dart' as http;
 
-class SetNewPass extends ConsumerStatefulWidget {
-  const SetNewPass({super.key});
+class NewPasssword extends ConsumerStatefulWidget {
+  const NewPasssword({super.key});
+
   @override
-  ConsumerState<SetNewPass> createState() {
-    return _SetNewPass();
+  ConsumerState<NewPasssword> createState() {
+    return _NewPassword();
   }
 }
 
-class _SetNewPass extends ConsumerState<SetNewPass> {
+class _NewPassword extends ConsumerState<NewPasssword> {
   final _formKey = GlobalKey<FormState>();
-  final _passwordController = TextEditingController();
-  String? _error;
   bool _seePass = false;
-  bool _isSending = false;
-  bool _seeConfPass = false;
+  final _passwordController = TextEditingController();
   String confirmPassword = '';
+
+  bool _seeConfPass = false;
+  bool _isLoading = false;
+  String? _error;
   void _onSubmit() async {
     try {
       if (_formKey.currentState!.validate()) {
         _formKey.currentState!.save();
         setState(() {
-          _isSending = true;
+          _isLoading = true;
         });
-        final resetInfo = ref.read(resetProvider);
-        final userId = resetInfo[Reset.userId];
-
+        final userId = ref.read(currentUserProvider)[CurrentUser.id];
         final url =
             Uri.https('kalakalikasan-server.onrender.com', 'change-password');
-
-        final response = await http.post(
-          url,
-          headers: {'Content-type': 'application/json'},
-          body: json.encode(
-            {'id': userId, 'password': confirmPassword},
-          ),
-        );
+        final response = await http.post(url,
+            headers: {'Content-type': 'application/json'},
+            body: json.encode({'id': userId, 'password': confirmPassword}));
 
         if (response.statusCode >= 400) {
           final decoded = json.decode(response.body);
           setState(() {
             _error = decoded['error'];
-            _isSending = false;
+            _isLoading = false;
           });
           Future.delayed(Duration(seconds: 3), () {
             setState(() {
               _error = null;
             });
           });
+          return;
         }
 
         if (response.statusCode == 200) {
@@ -65,28 +61,25 @@ class _SetNewPass extends ConsumerState<SetNewPass> {
             SnackBar(
               backgroundColor: Theme.of(context).colorScheme.primaryContainer,
               content: Text(
-                'Password changed successfully',
+                'Password changed successfully!',
                 style: TextStyle(
-                  color: Theme.of(context).colorScheme.onPrimaryContainer,
-                ),
+                    color: Theme.of(context).colorScheme.onPrimaryContainer),
               ),
             ),
           );
 
-          ref.read(landingScreenProvider.notifier).swapScreen(0);
+          if (!context.mounted) {
+            return;
+          }
+
+          Navigator.of(context).pop();
         }
       }
     } catch (e) {
       ScaffoldMessenger.of(context).clearSnackBars();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          backgroundColor: Theme.of(context).colorScheme.errorContainer,
-          content: Text(
-            'Ooops, Something went wrong ',
-            style: TextStyle(
-              color: Theme.of(context).colorScheme.error,
-            ),
-          ),
+          content: Text('Oops, Something went wrong!'),
         ),
       );
     }
@@ -94,40 +87,35 @@ class _SetNewPass extends ConsumerState<SetNewPass> {
 
   @override
   Widget build(BuildContext context) {
+    // TODO: implement build
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Icon(
-          Icons.password,
-          size: 60,
-          color: Color.fromARGB(255, 32, 77, 44),
+        Row(
+          children: [
+            Expanded(
+              child: Text(
+                'For your security, we recommend updating your password regularly',
+                style: TextStyle(
+                  color: Theme.of(context).primaryColor,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            Icon(
+              Icons.password,
+              color: Theme.of(context).primaryColor,
+              size: 60,
+            )
+          ],
         ),
         SizedBox(
-          height: 16,
-        ),
-        Text(
-          'Set new password',
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: Color.fromARGB(255, 32, 77, 44),
-          ),
-        ),
-        SizedBox(
-          height: 8,
-        ),
-        Text(
-          'Set up your new password',
-          style: TextStyle(
-            color: Color.fromARGB(255, 32, 77, 44),
-          ),
-        ),
-        SizedBox(
-          height: 16,
+          height: 12,
         ),
         Form(
           key: _formKey,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               TextFormField(
                 obscureText: !_seePass,
@@ -166,7 +154,7 @@ class _SetNewPass extends ConsumerState<SetNewPass> {
                               color: Theme.of(context).primaryColor,
                             )),
                   label: Text(
-                    'New Password',
+                    'New password',
                     style: TextStyle(color: Color.fromARGB(255, 32, 77, 44)),
                   ),
                   fillColor: Color.fromARGB(255, 32, 77, 44),
@@ -185,7 +173,7 @@ class _SetNewPass extends ConsumerState<SetNewPass> {
                 ),
               ),
               SizedBox(
-                height: 12,
+                height: 8,
               ),
               TextFormField(
                 //Confirm password
@@ -243,31 +231,33 @@ class _SetNewPass extends ConsumerState<SetNewPass> {
                 ),
               ),
               SizedBox(
-                height: 16,
+                height: 12,
               ),
               if (_error != null)
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 12),
+                  padding: const EdgeInsets.symmetric(vertical: 12),
                   child: ErrorSingle(errorMessage: _error),
                 ),
-              if (_isSending) LoadingLg(20),
-              if (!_isSending)
+              if (_isLoading)
+                SizedBox(
+                  width: 100,
+                  height: 50,
+                  child: LoadingLg(20),
+                ),
+              if (!_isLoading)
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color.fromARGB(255, 32, 77, 44),
-                    minimumSize: const Size(double.infinity, 50),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                  ),
+                      minimumSize: const Size(100, 50),
+                      backgroundColor: Theme.of(context).primaryColor,
+                      foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10))),
                   onPressed: _onSubmit,
-                  child: const Text(
-                    'Reset password',
-                    style: TextStyle(color: Colors.white),
-                  ),
+                  child: Text('Change password'),
                 ),
             ],
           ),
-        )
+        ),
       ],
     );
   }

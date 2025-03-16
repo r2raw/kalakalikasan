@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kalakalikasan/provider/current_user_provider.dart';
 import 'package:kalakalikasan/provider/screen_provider.dart';
 import 'package:kalakalikasan/widgets/actors/home_carousel.dart';
 
@@ -8,6 +9,7 @@ class RecycleTipsSlides extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final userRole = ref.read(currentUserProvider)[CurrentUser.role];
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 0, 30, 150),
       child: Column(
@@ -28,6 +30,10 @@ class RecycleTipsSlides extends ConsumerWidget {
                 TextButton(
                     style: TextButton.styleFrom(),
                     onPressed: () {
+                      if (userRole == 'officer') {
+                        ref.read(screenProvider.notifier).swapScreen(2);
+                        return;
+                      }
                       ref.read(screenProvider.notifier).swapScreen(3);
                     },
                     child: Text(

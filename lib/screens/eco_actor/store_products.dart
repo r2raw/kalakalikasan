@@ -38,12 +38,11 @@ class _StoreProducts extends ConsumerState<StoreProducts> {
         _isFetching = true;
       });
 
-      final url = Uri.https('kalakalikasan-server.onrender.com', 'fetch-available-products/${storeInfo.storeId}');
+      final url = Uri.https('kalakalikasan-server.onrender.com',
+          'fetch-available-products/${storeInfo.storeId}');
       final response = await http.get(url);
 
-      print('fetching products');
       if (response.statusCode == 200) {
-        print('fetching products');
         final decoded = json.decode(response.body);
 
         final loadedProducts = decoded['products'];
@@ -64,7 +63,13 @@ class _StoreProducts extends ConsumerState<StoreProducts> {
         });
       }
     } catch (e) {
-      print('error fetching: $e');
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        backgroundColor: Theme.of(context).colorScheme.errorContainer,
+          content: Text(
+        'Ooops! Something went wrong',
+        style: TextStyle(color: Theme.of(context).colorScheme.error),
+      )));
     }
   }
 

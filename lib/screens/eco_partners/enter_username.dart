@@ -9,6 +9,7 @@ import 'package:kalakalikasan/provider/url_provider.dart';
 import 'package:kalakalikasan/provider/user_qr_provider.dart';
 import 'package:kalakalikasan/screens/collection_officer/collected_materials_summary.dart';
 import 'package:http/http.dart' as http;
+import 'package:kalakalikasan/screens/collection_officer/receipt_qr_result.dart';
 import 'package:kalakalikasan/widgets/loading_lg.dart';
 
 class EnterUsernameScreen extends ConsumerStatefulWidget {
@@ -68,8 +69,9 @@ class _EnterUsernameScreen extends ConsumerState<EnterUsernameScreen> {
 
           ref.read(userQrProvider.notifier).loadUserQr(userData);
 
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (ctx) => CollectedMaterialsSummaryScreen()));
+          Navigator.of(context).push(
+              MaterialPageRoute(builder: (ctx) => ReceiptQrResultScreen()));
+          return;
         }
       } catch (e) {
         ScaffoldMessenger.of(context).clearSnackBars();
@@ -90,15 +92,15 @@ class _EnterUsernameScreen extends ConsumerState<EnterUsernameScreen> {
         centerTitle: true,
         flexibleSpace: Container(
           decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Color.fromARGB(255, 72, 114, 50),
-                  Color.fromARGB(255, 32, 77, 44)
-                ],
-                begin: Alignment.centerRight,
-                end: Alignment.centerLeft,
-              ),
-              ),
+            gradient: LinearGradient(
+              colors: [
+                Color.fromARGB(255, 72, 114, 50),
+                Color.fromARGB(255, 32, 77, 44)
+              ],
+              begin: Alignment.centerRight,
+              end: Alignment.centerLeft,
+            ),
+          ),
         ),
       ),
       body: Container(
@@ -163,20 +165,24 @@ class _EnterUsernameScreen extends ConsumerState<EnterUsernameScreen> {
               SizedBox(
                 height: 16,
               ),
-              if(_isSending)Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Padding( padding: EdgeInsets.symmetric(horizontal: 40),child: LoadingLg(20)),
-                ],
-              ),
-              if(!_isSending)ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Color.fromARGB(255, 32, 77, 44),
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10))),
-                  onPressed: _onSubmit,
-                  child: Text('Submit')),
+              if (_isSending)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 40),
+                        child: LoadingLg(20)),
+                  ],
+                ),
+              if (!_isSending)
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Color.fromARGB(255, 32, 77, 44),
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10))),
+                    onPressed: _onSubmit,
+                    child: Text('Submit')),
             ],
           ),
         ),

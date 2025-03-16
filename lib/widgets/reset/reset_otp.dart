@@ -1,20 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kalakalikasan/provider/reset_otp_provider.dart';
+import 'package:kalakalikasan/widgets/error_single.dart';
 
-class ResetOtp extends StatefulWidget {
+class ResetOtp extends ConsumerStatefulWidget {
   const ResetOtp({super.key, required this.goToStep});
   final void Function(int step) goToStep;
 
   @override
-  State<ResetOtp> createState() {
+  ConsumerState<ResetOtp> createState() {
     return _ResetOtp();
   }
 }
 
-class _ResetOtp extends State<ResetOtp> {
-   final List<String> _otp = List.filled(6, "");
+class _ResetOtp extends ConsumerState<ResetOtp> {
+  final List<String> _otp = List.filled(6, "");
+  String? _error;
 
-   void _updateOtp(int index, String value) {
+  void _updateOtp(int index, String value) {
     setState(() {
       _otp[index] = value;
     });
@@ -22,12 +26,27 @@ class _ResetOtp extends State<ResetOtp> {
 
   void _submitOtp() {
     String otpCode = _otp.join();
+
+    final resetInfo = ref.read(resetProvider);
+    if(resetInfo[Reset.otp] != otpCode){
+      setState(() {
+        _error = 'Invalid otp code';
+      });
+      Future.delayed(Duration(seconds: 3), (){
+        setState(() {
+          _error = null;
+        });
+      });
+      return;
+    }
     widget.goToStep(3);
     print("Entered OTP: $otpCode"); // Replace with your logic
   }
 
   @override
   Widget build(BuildContext context) {
+    final resetInfo = ref.read(resetProvider);
+    final resetEmail = resetInfo[Reset.email];
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -52,7 +71,7 @@ class _ResetOtp extends State<ResetOtp> {
         ),
         Text(
           textAlign: TextAlign.center,
-          'We sent a code to xxxxx@gmail.com',
+          'We sent a code to $resetEmail',
           style: TextStyle(
             color: Color.fromARGB(255, 32, 77, 44),
           ),
@@ -105,6 +124,11 @@ class _ResetOtp extends State<ResetOtp> {
         SizedBox(
           height: 16,
         ),
+        if (_error != null)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 12),
+            child: ErrorSingle(errorMessage: _error),
+          ),
         ElevatedButton(
           style: ElevatedButton.styleFrom(
             backgroundColor: Color.fromARGB(255, 32, 77, 44),

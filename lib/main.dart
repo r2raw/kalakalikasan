@@ -21,18 +21,18 @@ void main() {
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
                 color: Color.fromARGB(
-                    255, 32, 77, 44), // Use primaryColor value directly
+                    255, 32, 77, 44), 
               ),
               headlineMedium: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
                 color: Color.fromARGB(
-                    255, 32, 77, 44), // Use primaryColor value directly
+                    255, 32, 77, 44), 
               ),
               headlineSmall: TextStyle(
                 fontSize: 11,
                 color: Color.fromARGB(
-                    255, 32, 77, 44), // Use primaryColor value directly
+                    255, 32, 77, 44),
               )),
           textSelectionTheme: TextSelectionThemeData(
               selectionColor: Color.fromARGB(132, 38, 167, 72)),

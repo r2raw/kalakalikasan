@@ -1,12 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kalakalikasan/provider/current_user_provider.dart';
 import 'package:kalakalikasan/provider/manual_collection_provider.dart';
 import 'package:kalakalikasan/provider/rates_provider.dart';
-import 'package:kalakalikasan/provider/url_provider.dart';
 import 'package:kalakalikasan/screens/collection_officer.dart';
 import 'package:kalakalikasan/util/otp.dart';
 import 'package:kalakalikasan/util/validation.dart';

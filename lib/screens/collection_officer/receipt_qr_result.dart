@@ -23,7 +23,7 @@ import 'dart:ui' as ui;
 class ReceiptQrResultScreen extends ConsumerStatefulWidget {
   const ReceiptQrResultScreen({super.key});
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() {
+  ConsumerState<ReceiptQrResultScreen> createState() {
     return _ReceiptQrResultScreen();
   }
 }
