@@ -52,7 +52,7 @@ class _SalesTrendState extends ConsumerState<SalesTrend> {
   Future<void> _loadSalesTrend() async {
     try {
       final storeId = ref.read(userStoreProvider)[UserStore.id];
-      final url = Uri.http(ref.read(urlProvider), 'fetch-store-sales-trend/$storeId');
+      final url = Uri.https('kalakalikasan-server.onrender.com', 'fetch-store-sales-trend/$storeId');
       final response = await http.get(url);
 
       if (response.statusCode >= 400) {
@@ -74,7 +74,7 @@ class _SalesTrendState extends ConsumerState<SalesTrend> {
   Future<void> _loadAvailableYears() async {
     try {
       final storeId = ref.read(userStoreProvider)[UserStore.id];
-      final url = Uri.http(ref.read(urlProvider), 'fetch-available-sales-years/$storeId');
+      final url = Uri.https('kalakalikasan-server.onrender.com', 'fetch-available-sales-years/$storeId');
       final response = await http.get(url);
 
       if (response.statusCode >= 400) {

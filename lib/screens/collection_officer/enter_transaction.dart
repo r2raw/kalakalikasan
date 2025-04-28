@@ -60,6 +60,17 @@ class _EnterTransactionScreen extends ConsumerState<EnterTransactionScreen> {
           final decoded = json.decode(response.body);
           final receipt = decoded['receipt'];
 
+          if (receipt['claiming_status'] == 'completed') {
+            setState(() {
+              _error = 'Reciept has been claimed already';
+            });
+            Future.delayed(Duration(seconds: 3), () {
+              setState(() {
+                _error = null;
+              });
+            });
+            return;
+          }
           final receiptData = {
             ReceiptItem.transactionId: receipt['transaction_id'],
             ReceiptItem.transactionDate: receipt['transaction_date'],

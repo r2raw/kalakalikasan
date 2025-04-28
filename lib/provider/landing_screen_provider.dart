@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class LandingScreenNotifier extends StateNotifier<int>{
   
-  LandingScreenNotifier() : super(0);
+  LandingScreenNotifier() : super(3);
   int swapScreen(int selectedScreen){
     return state = selectedScreen;
     

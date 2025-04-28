@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kalakalikasan/provider/current_user_provider.dart';
 import 'package:kalakalikasan/provider/url_provider.dart';
 import 'package:kalakalikasan/provider/user_store_provider.dart';
 import 'package:kalakalikasan/screens/eco_partners/my_store_info.dart';
+import 'package:kalakalikasan/util/text_casing.dart';
 
 class StoreInfoBtn extends ConsumerWidget {
   const StoreInfoBtn({super.key});
@@ -11,7 +13,6 @@ class StoreInfoBtn extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final storeLogo = ref.read(userStoreProvider)[UserStore.storeLogo];
     final storeName = ref.read(userStoreProvider)[UserStore.storeName];
-
     // TODO: implement build
     return InkWell(
       onTap: () {
@@ -27,10 +28,7 @@ class StoreInfoBtn extends ConsumerWidget {
             Row(
               children: [
                 if (storeLogo == null)
-                  Icon(
-                    Icons.store,
-                    size: 50,
-                  ),
+                  Image.asset('assets/icons/basura_icon.png', width: 50, height: 50,),
                 if (storeLogo != null)
                   Image.network(
                     'https://kalakalikasan-server.onrender.com/store-cred/store_logo/${storeLogo}',
@@ -42,8 +40,8 @@ class StoreInfoBtn extends ConsumerWidget {
                   width: 15,
                 ),
                 Text(
-                  storeName,
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  toTitleCase(storeName),
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Theme.of(context).primaryColor),
                 ),
               ],
             ),

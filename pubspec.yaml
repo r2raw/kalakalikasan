@@ -100,6 +100,10 @@ flutter:
     - assets/icons/wastes_icon.png
     - assets/icons/basura_icon.png
     - assets/icons/basura_bot_text.png
+    - assets/images/tuts1.png
+    - assets/images/tuts2.png
+    - assets/images/tuts3.png
+    - assets/images/tuts4.png
     # - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

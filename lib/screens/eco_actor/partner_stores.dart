@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kalakalikasan/model/product.dart';
 import 'package:kalakalikasan/model/store.dart';
 import 'package:kalakalikasan/provider/current_user_provider.dart';
 import 'package:kalakalikasan/provider/url_provider.dart';
@@ -22,6 +23,8 @@ class PartnerStoresScreen extends ConsumerStatefulWidget {
 
 class _PartnerStoresScreen extends ConsumerState<PartnerStoresScreen> {
   List<Store> storeList = [];
+
+  String _searchQuery = "";
   bool _isLoading = false;
   @override
   void initState() {
@@ -37,7 +40,8 @@ class _PartnerStoresScreen extends ConsumerState<PartnerStoresScreen> {
       });
 
       final userId = ref.read(currentUserProvider)[CurrentUser.id];
-      final url = Uri.https('kalakalikasan-server.onrender.com', 'fetch-stores/$userId');
+      final url = Uri.https(
+          'kalakalikasan-server.onrender.com', 'fetch-stores/$userId');
 
       final response = await http.get(url);
       if (response.statusCode == 200) {
@@ -52,7 +56,6 @@ class _PartnerStoresScreen extends ConsumerState<PartnerStoresScreen> {
             store['store_logo'] ?? '',
           ));
         }
-
 
         setState(() {
           _isLoading = false;
@@ -90,14 +93,20 @@ class _PartnerStoresScreen extends ConsumerState<PartnerStoresScreen> {
     }
 
     if (storeList.isNotEmpty) {
+      List<Store> filteredStore = storeList
+          .where((store) => store.storeName
+              .toLowerCase()
+              .contains(_searchQuery.toLowerCase()))
+          .toList()
+        ..sort((a, b) => a.storeName.compareTo(b.storeName));
       content = Stack(
         children: [
           GridView.builder(
-            itemCount: storeList.length,
+            itemCount: filteredStore.length,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2),
             itemBuilder: (ctx, index) => StoreCard(
-              storeInfo: storeList[index],
+              storeInfo: filteredStore[index],
             ),
           ),
           if (userStore.isEmpty &&
@@ -119,8 +128,6 @@ class _PartnerStoresScreen extends ConsumerState<PartnerStoresScreen> {
           decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                // Color.fromARGB(255, 141, 253, 120),
-                // Color.fromARGB(255, 0, 131, 89)
                 Color.fromARGB(255, 72, 114, 50),
                 Color.fromARGB(255, 32, 77, 44)
               ],
@@ -135,12 +142,16 @@ class _PartnerStoresScreen extends ConsumerState<PartnerStoresScreen> {
         height: h,
         width: w,
         padding: EdgeInsets.symmetric(horizontal: 0, vertical: 20),
-        // decoration: BoxDecoration(color: Color.fromARGB(255, 233, 233, 233)),
         child: Column(
           children: [
             Container(
               padding: EdgeInsets.symmetric(horizontal: 20),
-              child: const TextField(
+              child: TextField(
+                onChanged: (value) {
+                  setState(() {
+                    _searchQuery = value.toLowerCase();
+                  });
+                },
                 decoration: InputDecoration(
                   label: Text('Search store'),
                   icon: Icon(Icons.search),

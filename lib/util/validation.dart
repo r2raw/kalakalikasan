@@ -50,6 +50,14 @@ String myDateTime(Map<String, dynamic> timestamp) {
   return DateFormat('MM/dd/yyyy - hh:mm a').format(date);
 }
 
+
+String dateTimeShort(Map<String, dynamic> timestamp) {
+  int seconds = timestamp["_seconds"];
+  DateTime date = DateTime.fromMillisecondsSinceEpoch(seconds * 1000);
+
+  return DateFormat('MM/dd/yyyy').format(date);
+}
+
 String formatCurrency(int amount) {
   // Manually set the currency symbol to ₱
   final NumberFormat currencyFormat = NumberFormat('#,##0', 'en_PH');

@@ -8,6 +8,7 @@ import 'package:kalakalikasan/screens/about_us.dart';
 import 'package:kalakalikasan/screens/change_password.dart';
 import 'package:kalakalikasan/screens/login.dart';
 import 'package:kalakalikasan/screens/terms_and_condition.dart';
+import 'package:kalakalikasan/screens/user_info.dart';
 import 'package:kalakalikasan/util/text_truncate.dart';
 import 'package:kalakalikasan/widgets/actors/menu_drawer_item.dart';
 
@@ -58,43 +59,49 @@ class UserDrawer extends ConsumerWidget {
           children: [
             Container(
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.person,
-                        size: 50,
-                        color: Colors.white,
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            fullName,
-                            style: TextStyle(
-                              fontSize: 24,
-                              color: Colors.white,
-                            ),
-                          ),
-                          Text(email,
+              child: InkWell(
+                onTap: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (ctx) => UserInfo()));
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.person,
+                          size: 50,
+                          color: Colors.white,
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              fullName,
                               style: TextStyle(
-                                fontSize: 16,
+                                fontSize: 24,
                                 color: Colors.white,
-                              ))
-                        ],
-                      ),
-                    ],
-                  ),
-                  Icon(
-                    Icons.arrow_right,
-                    color: Colors.white,
-                  )
-                ],
+                              ),
+                            ),
+                            Text(email,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.white,
+                                ))
+                          ],
+                        ),
+                      ],
+                    ),
+                    Icon(
+                      Icons.arrow_right,
+                      color: Colors.white,
+                    )
+                  ],
+                ),
               ),
             ),
             Expanded(

@@ -34,7 +34,7 @@ class _NotificationScreen extends ConsumerState<NotificationScreen> {
     if (readNotifs.length > 0 || unreadNotifs.length > 0) {
       content = Column(
         children: [
-          NotificationFilter(),
+          // NotificationFilter(),
           Expanded(
             child: SingleChildScrollView(
               child: Column(
@@ -52,18 +52,18 @@ class _NotificationScreen extends ConsumerState<NotificationScreen> {
                               Text(
                                 'Unread notifications',
                               ),
-                              InkWell(
-                                onTap: () {},
-                                child: Row(
-                                  children: [
-                                    Text('Mark all as read'),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    Icon(Icons.mark_as_unread_outlined),
-                                  ],
-                                ),
-                              ),
+                              // InkWell(
+                              //   onTap: () {},
+                              //   child: Row(
+                              //     children: [
+                              //       Text('Mark all as read'),
+                              //       SizedBox(
+                              //         width: 10,
+                              //       ),
+                              //       Icon(Icons.mark_as_unread_outlined),
+                              //     ],
+                              //   ),
+                              // ),
                             ],
                           ),
                         ),

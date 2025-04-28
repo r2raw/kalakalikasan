@@ -52,7 +52,7 @@ class _StepOne extends ConsumerState<StepOne> {
   }
 
   final DateTime past18Years = DateTime(
-      DateTime.now().year - 13, DateTime.now().month, DateTime.now().day);
+      DateTime.now().year - 18, DateTime.now().month, DateTime.now().day);
 
   Future<void> _selectDate() async {
     final DateTime? picked = await showDatePicker(
@@ -244,7 +244,7 @@ class _StepOne extends ConsumerState<StepOne> {
                 }
 
                 if (DateTime.parse(value).isAfter(past18Years)) {
-                  return 'Must be 13 years old or older';
+                  return 'Must be 18 years old or older';
                 }
                 return null;
               },

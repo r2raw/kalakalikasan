@@ -36,7 +36,7 @@ class _FirstTimeLog extends ConsumerState<FirstTimeLog> {
         setState(() {
           _isSending = true;
         });
-        final url = Uri.http(ref.read(urlProvider), 'first-time-log');
+        final url = Uri.https('kalakalikasan-server.onrender.com', 'first-time-log');
         final userId = ref.read(currentUserProvider)[CurrentUser.id];
         final response = await http.post(
           url,

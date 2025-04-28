@@ -229,7 +229,7 @@ class _TransactionListState extends ConsumerState<TransactionList> {
                       // SizedBox(width: 130, child: Text(transaction['info'])),
                       Expanded(child: transactValue),
                       Container(
-                        width: 80,
+                        width: 100,
                         decoration: statusDecoration,
                         child: Text(
                           toTitleCase(transaction['status']),

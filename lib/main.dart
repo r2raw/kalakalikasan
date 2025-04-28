@@ -58,14 +58,11 @@ void main() {
           cardTheme: CardTheme(
             
             color: Color.fromARGB(
-                255, 245, 245, 245), 
-            // color: Color.fromARGB(
-            //     255, 235, 245, 235), // Light background for contrast
+                255, 245, 245, 245),
             shadowColor:
-                Color.fromARGB(80, 32, 77, 44), // Subtle dark green shadow
-            elevation: 3, // Lower elevation to reduce harsh shadow
+                Color.fromARGB(80, 32, 77, 44), 
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12), // Rounded corners
+              borderRadius: BorderRadius.circular(12), 
             ),
           ),
         ),

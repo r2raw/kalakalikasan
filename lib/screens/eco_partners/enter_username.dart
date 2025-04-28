@@ -13,7 +13,8 @@ import 'package:kalakalikasan/screens/collection_officer/receipt_qr_result.dart'
 import 'package:kalakalikasan/widgets/loading_lg.dart';
 
 class EnterUsernameScreen extends ConsumerStatefulWidget {
-  const EnterUsernameScreen({super.key});
+  const EnterUsernameScreen({super.key, required this.origin});
+  final String origin;
   @override
   ConsumerState<EnterUsernameScreen> createState() {
     return _EnterUsernameScreen();
@@ -69,6 +70,11 @@ class _EnterUsernameScreen extends ConsumerState<EnterUsernameScreen> {
 
           ref.read(userQrProvider.notifier).loadUserQr(userData);
 
+          if (widget.origin == 'dashboard') {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (ctx) => CollectedMaterialsSummaryScreen()));
+            return;
+          }
           Navigator.of(context).push(
               MaterialPageRoute(builder: (ctx) => ReceiptQrResultScreen()));
           return;

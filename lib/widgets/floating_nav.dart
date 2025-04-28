@@ -9,6 +9,7 @@ class FloatingNav extends ConsumerWidget {
   const FloatingNav({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final currentScreenIndex = ref.watch(screenProvider);
     return Card(
       margin: EdgeInsets.only(left: 20, right: 20, bottom: 40),
       child: Container(
@@ -24,7 +25,9 @@ class FloatingNav extends ConsumerWidget {
               for (final navItem in actorNav)
                 IconButton(
                   style: IconButton.styleFrom(
-                    foregroundColor: const Color.fromARGB(255, 255, 255, 255),
+                  foregroundColor: currentScreenIndex == navItem.index
+                      ? Theme.of(context).highlightColor
+                      : Theme.of(context).colorScheme.onPrimary,
                     iconSize: 40,
                   ),
                   onPressed: () {
@@ -41,7 +44,9 @@ class FloatingNav extends ConsumerWidget {
               for (final navItem in partnerNav)
                 IconButton(
                   style: IconButton.styleFrom(
-                    foregroundColor: const Color.fromARGB(255, 255, 255, 255),
+                  foregroundColor: currentScreenIndex == navItem.index
+                      ? Theme.of(context).highlightColor
+                      : Theme.of(context).colorScheme.onPrimary,
                     iconSize: 40,
                   ),
                   onPressed: () {

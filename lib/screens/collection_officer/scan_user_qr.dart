@@ -138,7 +138,7 @@ class _ScanUserQrScreen extends ConsumerState<ScanUserQrScreen> {
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (ctx) => EnterUsernameScreen(),
+                      builder: (ctx) => EnterUsernameScreen(origin: 'dashboard',),
                     ),
                   );
                 },

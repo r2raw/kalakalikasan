@@ -31,7 +31,7 @@ class _ResetPassword extends ConsumerState<ResetPassword> {
           _isSending = true;
         });
         final otp = generateRandomCode();
-        final url = Uri.http(ref.read(urlProvider), 'get-email');
+        final url = Uri.https('kalakalikasan-server.onrender.com', 'get-email');
 
         final response = await http.post(url,
             headers: {'Content-type': 'application/json'},

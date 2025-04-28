@@ -58,14 +58,14 @@ class UserTransactionsScreen extends StatelessWidget {
                       'Transaction History',
                       style: Theme.of(context).textTheme.headlineLarge,
                     ),
-                    Text(
-                      'View your recent transaction history.',
-                      style: Theme.of(context).textTheme.headlineSmall,
-                    ),
-                    Text(
-                      'Tap on any details to see additional details.',
-                      style: Theme.of(context).textTheme.headlineSmall,
-                    )
+                    // Text(
+                    //   'View your recent transaction history.',
+                    //   style: Theme.of(context).textTheme.headlineSmall,
+                    // ),
+                    // Text(
+                    //   'Tap on any details to see additional details.',
+                    //   style: Theme.of(context).textTheme.headlineSmall,
+                    // )
                   ]),
                   Icon(
                     MingCute.history_line,

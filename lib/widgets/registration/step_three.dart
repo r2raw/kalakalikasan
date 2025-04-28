@@ -139,7 +139,7 @@ class _StepThree extends ConsumerState<StepThree> {
           _isSending = true;
         });
         final url =
-            Uri.http(ref.read(urlProvider), 'register-actor');
+            Uri.https('kalakalikasan-server.onrender.com', 'register-actor');
         final response = await http.post(
           url,
           headers: {"Content-type": "application/json"},

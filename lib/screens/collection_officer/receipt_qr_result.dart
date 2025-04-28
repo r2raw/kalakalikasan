@@ -109,19 +109,19 @@ class _ReceiptQrResultScreen extends ConsumerState<ReceiptQrResultScreen> {
     final fullname = '${qrInfo[UserQr.firstName]} ${qrInfo[UserQr.lastName]}';
     return Scaffold(
       appBar: AppBar(
-        foregroundColor: Theme.of(context).primaryColor,
+        foregroundColor: Colors.white,
         centerTitle: true,
         title: Text('Result'),
         flexibleSpace: Container(
           decoration: const BoxDecoration(
-              // gradient: LinearGradient(
-              //   colors: [
-              //     Color.fromARGB(255, 72, 114, 50),
-              //     Color.fromARGB(255, 32, 77, 44)
-              //   ],
-              //   begin: Alignment.centerRight,
-              //   end: Alignment.centerLeft,
-              // ),
+              gradient: LinearGradient(
+                colors: [
+                  Color.fromARGB(255, 72, 114, 50),
+                  Color.fromARGB(255, 32, 77, 44)
+                ],
+                begin: Alignment.centerRight,
+                end: Alignment.centerLeft,
+              ),
               ),
         ),
       ),

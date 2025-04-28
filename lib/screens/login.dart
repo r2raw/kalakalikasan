@@ -14,6 +14,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:kalakalikasan/screens/forgot_password.dart';
 import 'package:kalakalikasan/screens/register.dart';
+import 'package:kalakalikasan/screens/tutorial_screen.dart';
 import 'package:kalakalikasan/widgets/error_single.dart';
 import 'package:kalakalikasan/widgets/loading_lg.dart';
 
@@ -32,6 +33,31 @@ class _LoginState extends ConsumerState<Login> {
   var _enteredUserPass = '';
   bool _isSending = false;
   String? _error;
+
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _showDialog();
+  // }
+
+  
+  // void _showDialog() {
+  //   showDialog(
+  //       context: context,
+  //       builder: (ctx) => AlertDialog(
+  //             title: Text('Invalid login'),
+  //             content: Text('Incorrect login credentialsu'),
+  //             actions: [
+  //               TextButton(
+  //                   onPressed: () {
+  //                     Navigator.pop(context);
+  //                   },
+  //                   child: Text('Okay'))
+  //             ],
+  //           ));
+  // }
+  
   void _onSaveForm() async {
     try {
       final url =
@@ -157,21 +183,6 @@ class _LoginState extends ConsumerState<Login> {
     ref.read(landingScreenProvider.notifier).swapScreen(1);
   }
 
-  // void _showDialog() {
-  //   showDialog(
-  //       context: context,
-  //       builder: (ctx) => AlertDialog(
-  //             title: Text('Invalid login'),
-  //             content: Text('Incorrect login credentialsu'),
-  //             actions: [
-  //               TextButton(
-  //                   onPressed: () {
-  //                     Navigator.pop(context);
-  //                   },
-  //                   child: Text('Okay'))
-  //             ],
-  //           ));
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -306,6 +317,9 @@ class _LoginState extends ConsumerState<Login> {
 
     if (landingScreen == 2) {
       content = RegisterScreen();
+    }
+    if (landingScreen == 3) {
+      content = TutorialScreen();
     }
     return content;
   }

@@ -163,8 +163,6 @@ class _MyProductListScreen extends ConsumerState<MyProductListScreen> {
           decoration: const BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  // Color.fromARGB(255, 141, 253, 120),
-                  // Color.fromARGB(255, 0, 131, 89)
                   Color.fromARGB(255, 72, 114, 50),
                   Color.fromARGB(255, 32, 77, 44)
                 ],

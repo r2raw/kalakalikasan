@@ -228,8 +228,6 @@ class _ViewPostScreen extends ConsumerState<ViewPostScreen> {
           decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                // Color.fromARGB(255, 141, 253, 120),
-                // Color.fromARGB(255, 0, 131, 89)
                 Color.fromARGB(255, 72, 114, 50),
                 Color.fromARGB(255, 32, 77, 44)
               ],
@@ -351,7 +349,6 @@ class _ViewPostScreen extends ConsumerState<ViewPostScreen> {
                                       shrinkWrap: true,
                                       itemCount: contentData.comments.length,
                                       itemBuilder: (ctx, index) {
-                                        // Sort comments by `_seconds` (latest first)
                                         final sortedComments =
                                             List<Map<String, dynamic>>.from(
                                                 contentData.comments)

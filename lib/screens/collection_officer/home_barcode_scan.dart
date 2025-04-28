@@ -145,7 +145,7 @@ class _HomeBarcodeScanScreen extends ConsumerState<HomeBarcodeScanScreen> {
               onPressed: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (ctx) => EnterUsernameScreen(),
+                    builder: (ctx) => EnterUsernameScreen(origin: 'qr',),
                   ),
                 );
               },

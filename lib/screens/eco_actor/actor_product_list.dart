@@ -5,6 +5,7 @@ import 'package:kalakalikasan/model/product.dart';
 import 'package:kalakalikasan/model/store.dart';
 import 'package:kalakalikasan/provider/cart_provider.dart';
 import 'package:kalakalikasan/provider/url_provider.dart';
+import 'package:kalakalikasan/util/text_casing.dart';
 
 class ActorProductList extends ConsumerStatefulWidget {
   const ActorProductList({
@@ -104,7 +105,7 @@ class _ActorProductList extends ConsumerState<ActorProductList> {
                             ),
                     ),
                   ),
-                  Text(productList[index].title),
+                  Text(toTitleCase(productList[index].title), overflow: TextOverflow.ellipsis, style: TextStyle(color: Theme.of(context).primaryColor),),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

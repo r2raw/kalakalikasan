@@ -89,6 +89,11 @@ class _CollectedMaterialsSummaryScreen
         if (!context.mounted) {
           return;
         }
+        if (ref.read(userQrProvider).isEmpty) {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (ctx) => CollectedMaterialsSummaryScreen()));
+          return;
+        }
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (ctx) => CollectionOfficerScreen()),
           (route) => false,
@@ -325,7 +330,7 @@ class _CollectedMaterialsSummaryScreen
         padding: EdgeInsets.all(20),
         // decoration:
         //     const BoxDecoration(color: Color.fromARGB(255, 233, 233, 233)),
-        child: content,
+        child: SingleChildScrollView(child: content),
       ),
     );
   }

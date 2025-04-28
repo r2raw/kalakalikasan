@@ -8,9 +8,12 @@ import 'package:kalakalikasan/provider/receipt_provider.dart';
 import 'package:kalakalikasan/provider/url_provider.dart';
 import 'package:kalakalikasan/screens/eco_actor/barcode_result.dart';
 import 'package:kalakalikasan/screens/eco_partners/user_trade_request.dart';
+import 'package:kalakalikasan/screens/view_content_notif.dart';
 import 'package:kalakalikasan/util/text_truncate.dart';
 import 'package:kalakalikasan/util/validation.dart';
 import 'package:http/http.dart' as http;
+import 'package:kalakalikasan/widgets/actors/payment_status.dart';
+import 'package:kalakalikasan/widgets/actors/store_notif.dart';
 
 const lorem =
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
@@ -70,6 +73,18 @@ class NotificationItem extends ConsumerWidget {
         _productReqNotif(context);
       }
 
+      if (redirectType == 'payment') {
+        _paymentReqNotif(context);
+      }
+
+      if (redirectType == 'approval' || redirectType == 'rejected') {
+        _storeReqNotif(context);
+      }
+
+      if(redirectType == 'contents'){
+        _contentNotif(context);
+      }
+
       if (!isRead) {
         readNotif(ref, context);
       }
@@ -78,9 +93,24 @@ class NotificationItem extends ConsumerWidget {
     }
   }
 
+  void _storeReqNotif(BuildContext context) {
+    Navigator.of(context).pushReplacement(MaterialPageRoute(
+        builder: (ctx) => StoreNotif(storeId: redirectId, message: message)));
+  }
+
   void _productReqNotif(BuildContext context) {
     Navigator.of(context).pushReplacement(MaterialPageRoute(
         builder: (ctx) => UserTradeRequestScreen(orderId: redirectId)));
+  }
+
+  void _paymentReqNotif(BuildContext context) {
+    Navigator.of(context).pushReplacement(MaterialPageRoute(
+        builder: (ctx) => PaymentStatus(paymentId: redirectId)));
+  }
+
+  void _contentNotif(BuildContext context) {
+    Navigator.of(context).pushReplacement(MaterialPageRoute(
+        builder: (ctx) => ViewContentNotif(contentId: redirectId)));
   }
 
   void _receiptNotif(WidgetRef ref, BuildContext context) async {

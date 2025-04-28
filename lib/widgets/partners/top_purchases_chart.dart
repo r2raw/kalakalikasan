@@ -27,7 +27,7 @@ class _TopPurchasesChartState extends ConsumerState<TopPurchasesChart> {
   Future<void> fetchTopPurchases() async {
     try {
       final storeId = ref.read(userStoreProvider)[UserStore.id];
-      final url = Uri.http(ref.read(urlProvider), 'fetch-store-top-purchases/$storeId');
+      final url = Uri.https('kalakalikasan-server.onrender.com', 'fetch-store-top-purchases/$storeId');
       final response = await http.get(url);
 
       if (response.statusCode >= 400) {
