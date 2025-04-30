@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kalakalikasan/provider/current_user_provider.dart';
 import 'package:kalakalikasan/screens/eco_actor/shop_registration.dart';
-import 'package:kalakalikasan/screens/eco_actor/nearby_stations.dart';
 import 'package:kalakalikasan/screens/eco_actor/partner_stores.dart';
 import 'package:kalakalikasan/screens/eco_actor/point_exchange.dart';
 import 'package:kalakalikasan/screens/eco_actor/referral.dart';
